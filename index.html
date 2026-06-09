@@ -625,6 +625,109 @@ header h1 span { color: #fbbf24; }
 }
 .btn-home-r:hover { background: #e5e7eb; }
 
+/* ── BOUTON CLASSEMENT ── */
+.btn-leaderboard {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: white; border: none; border-radius: 16px;
+  padding: 14px; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; width: 100%; margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.4);
+  transition: transform 0.15s;
+}
+.btn-leaderboard:hover { transform: translateY(-2px); }
+
+/* ── ÉCRAN CLASSEMENT ── */
+#screen-leaderboard {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  margin-top: 10px;
+  display: none;
+}
+
+.lb-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.lb-header .lb-emoji { font-size: 3rem; }
+.lb-header h2 { font-size: 1.4rem; font-weight: 900; color: var(--bleu); margin-top: 6px; }
+.lb-header p { font-size: 0.85rem; color: #888; margin-top: 4px; }
+
+.lb-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--gris);
+  border-radius: 16px;
+  padding: 14px 16px;
+  transition: transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.lb-row.rank-1 { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid #f59e0b; }
+.lb-row.rank-2 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border: 2px solid #94a3b8; }
+.lb-row.rank-3 { background: linear-gradient(135deg, #fef7ee, #fed7aa); border: 2px solid #f97316; }
+.lb-row.is-me  { box-shadow: 0 0 0 3px rgba(37,99,235,0.3); }
+
+.lb-rank {
+  font-size: 1.5rem;
+  width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.lb-avatar {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.lb-info { flex: 1; }
+.lb-name { font-weight: 800; color: var(--bleu); font-size: 1rem; }
+.lb-sub  { font-size: 0.78rem; color: #666; margin-top: 2px; }
+
+.lb-xp {
+  text-align: right;
+  flex-shrink: 0;
+}
+.lb-xp .xp-num { font-size: 1.3rem; font-weight: 900; color: var(--violet); }
+.lb-xp .xp-label { font-size: 0.72rem; color: #888; }
+
+.lb-empty {
+  text-align: center;
+  padding: 30px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.lb-loading {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 0.9rem;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.btn-lb-back {
+  background: var(--gris); color: var(--bleu);
+  border: none; border-radius: 14px;
+  padding: 13px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; width: 100%;
+}
+.btn-lb-back:hover { background: #e5e7eb; }
+
+.lb-sync-status {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #aaa;
+  margin-top: 10px;
+}
+.lb-sync-status.ok    { color: #22c55e; }
+.lb-sync-status.error { color: #ef4444; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 440px) {
   header h1 { font-size: 1.25rem; }
@@ -711,6 +814,21 @@ header h1 span { color: #fbbf24; }
   </div>
 
   <button class="btn-start" onclick="startQuiz()">⚡ Commencer !</button>
+  <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 Classement de la famille</button>
+</div>
+
+<!-- ════ ÉCRAN CLASSEMENT ════ -->
+<div id="screen-leaderboard">
+  <div class="lb-header">
+    <div class="lb-emoji">🏆</div>
+    <h2>Classement Famille</h2>
+    <p>Qui sera le champion du code ?</p>
+  </div>
+  <div class="lb-list" id="lb-list">
+    <div class="lb-loading">Chargement du classement… ⏳</div>
+  </div>
+  <div class="lb-sync-status" id="lb-sync-status"></div>
+  <button class="btn-lb-back" onclick="goHome()">← Retour</button>
 </div>
 
 <!-- ════ ÉCRAN QUIZ ════ -->
@@ -794,8 +912,11 @@ header h1 span { color: #fbbf24; }
 // UTILISATEURS
 // ════════════════════════════════════════════
 const USERS = [
-  { user: "eugenie",  pass: "permis2027",   actif: true, nom: "Eugénie" },
-  { user: "papounet", pass: "jesuislepapa", actif: true, nom: "Papounet" },
+  { user: "eugenie",  pass: "permis2027",   actif: true, nom: "Eugénie",  avatar: "👩" },
+  { user: "victoire", pass: "victoire123",  actif: true, nom: "Victoire", avatar: "👸" },
+  { user: "jules",    pass: "jules123",     actif: true, nom: "Jules",    avatar: "🧑" },
+  { user: "marie",    pass: "marie123",     actif: true, nom: "Marie",    avatar: "👩‍🦱" },
+  { user: "papounet", pass: "jesuislepapa", actif: true, nom: "Papounet", avatar: "🧔" },
 ];
 
 let currentUser = null;
@@ -1084,7 +1205,7 @@ let xpTotal        = 0;
 // ════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════
-const SCREENS = ['screen-login','screen-home','screen-quiz','screen-result'];
+const SCREENS = ['screen-login','screen-home','screen-quiz','screen-result','screen-leaderboard'];
 
 function show(id) {
   SCREENS.forEach(s => { const el = document.getElementById(s); if(el) el.style.display = 'none'; });
@@ -1326,6 +1447,7 @@ function showResult() {
   document.getElementById('result-detail').textContent = detail;
 
   if (pass) setTimeout(launchConfetti, 200);
+  submitScore(); // Envoi du score au classement en ligne
 }
 
 // ════════════════════════════════════════════
@@ -1377,6 +1499,88 @@ function showStreakPopup() {
   popup.textContent = msg;
   popup.classList.add('show');
   setTimeout(() => popup.classList.remove('show'), 2000);
+}
+
+// ════════════════════════════════════════════
+// LEADERBOARD — sync avec l'API
+// ════════════════════════════════════════════
+const RANK_MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+
+async function showLeaderboard() {
+  show('screen-leaderboard');
+  document.getElementById('lb-list').innerHTML = '<div class="lb-loading">Chargement… ⏳</div>';
+  document.getElementById('lb-sync-status').textContent = '';
+
+  try {
+    const res = await fetch('/api/leaderboard');
+    if (!res.ok) throw new Error('API indisponible');
+    const data = await res.json();
+
+    // Trier par XP décroissant
+    const sorted = Object.entries(data)
+      .map(([key, val]) => ({ key, ...val }))
+      .sort((a, b) => (b.xp || 0) - (a.xp || 0));
+
+    const list = document.getElementById('lb-list');
+
+    if (sorted.length === 0) {
+      list.innerHTML = '<div class="lb-empty">Aucun score enregistré pour l\'instant.<br>Soyez le premier à jouer ! 🚀</div>';
+      return;
+    }
+
+    list.innerHTML = sorted.map((entry, i) => {
+      const userInfo = USERS.find(u => u.user === entry.key) || {};
+      const avatar   = userInfo.avatar || '👤';
+      const isMe     = currentUser && currentUser.user === entry.key;
+      const rankClass = i < 3 ? `rank-${i+1}` : '';
+      const meClass   = isMe ? 'is-me' : '';
+      const lastPlayed = entry.lastPlayed
+        ? new Date(entry.lastPlayed).toLocaleDateString('fr-FR')
+        : '—';
+
+      return `
+        <div class="lb-row ${rankClass} ${meClass}">
+          <div class="lb-rank">${RANK_MEDALS[i] || (i+1)}</div>
+          <div class="lb-avatar">${avatar}</div>
+          <div class="lb-info">
+            <div class="lb-name">${entry.nom}${isMe ? ' <span style="font-size:0.75rem;color:#2563eb">(moi)</span>' : ''}</div>
+            <div class="lb-sub">🎮 ${entry.gamesPlayed || 0} parties · 🔥 Série max ${entry.bestStreak || 0} · 📅 ${lastPlayed}</div>
+          </div>
+          <div class="lb-xp">
+            <div class="xp-num">⭐ ${entry.xp || 0}</div>
+            <div class="xp-label">XP total</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('lb-sync-status').textContent = '✓ Classement en temps réel';
+    document.getElementById('lb-sync-status').className = 'lb-sync-status ok';
+
+  } catch (e) {
+    document.getElementById('lb-list').innerHTML = '<div class="lb-empty">⚠️ Classement indisponible.<br>Vérifie ta connexion internet.</div>';
+    document.getElementById('lb-sync-status').textContent = 'KV non configuré — voir guide ci-dessous';
+    document.getElementById('lb-sync-status').className = 'lb-sync-status error';
+  }
+}
+
+async function submitScore() {
+  if (!currentUser) return;
+  try {
+    await fetch('/api/leaderboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user:       currentUser.user,
+        nom:        currentUser.nom,
+        xp:         xpSession,
+        bestScore:  score,
+        gamesPlayed: 1,
+        bestStreak: bestStreak,
+      })
+    });
+  } catch (e) {
+    console.warn('Score non synchronisé:', e.message);
+  }
 }
 
 // ════════════════════════════════════════════
