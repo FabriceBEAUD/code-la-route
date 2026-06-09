@@ -5,697 +5,1101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Le code de la route du Papounet 🚗</title>
 <style>
-  :root {
-    --bleu: #1a3a5c;
-    --rouge: #e63946;
-    --vert: #2a9d8f;
-    --jaune: #f4a261;
-    --gris-clair: #f1f3f5;
-    --blanc: #ffffff;
-    --ombre: 0 4px 20px rgba(0,0,0,0.12);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-  }
-
-  header {
-    text-align: center;
-    color: white;
-    padding: 24px 0 16px;
-    width: 100%;
-    max-width: 680px;
-  }
-
-  header h1 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-  }
-
-  header h1 span { color: var(--jaune); }
-
-  header p {
-    margin-top: 6px;
-    opacity: 0.85;
-    font-size: 0.95rem;
-  }
-
-  .header-user {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .header-user strong { color: var(--jaune); }
-
-  .btn-logout {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    margin-left: 8px;
-    transition: background 0.2s;
-  }
-
-  .btn-logout:hover { background: rgba(255,255,255,0.25); }
-
-  /* ── ÉCRAN LOGIN ── */
-  #screen-login {
-    background: white;
-    border-radius: 20px;
-    padding: 36px 28px;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: var(--ombre);
-    text-align: center;
-  }
-
-  #screen-login .login-emoji { font-size: 3.5rem; margin-bottom: 12px; }
-
-  #screen-login h2 {
-    font-size: 1.4rem;
-    color: var(--bleu);
-    margin-bottom: 4px;
-  }
-
-  #screen-login .login-sub {
-    color: #777;
-    font-size: 0.88rem;
-    margin-bottom: 28px;
-  }
-
-  .login-field {
-    margin-bottom: 16px;
-    text-align: left;
-  }
-
-  .login-field label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--bleu);
-    margin-bottom: 6px;
-  }
-
-  .login-field input {
-    width: 100%;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 1rem;
-    transition: border-color 0.2s;
-    outline: none;
-  }
-
-  .login-field input:focus { border-color: var(--bleu); }
-
-  .login-error {
-    background: #fdecea;
-    color: var(--rouge);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 0.88rem;
-    margin-bottom: 16px;
-    display: none;
-    text-align: left;
-  }
-
-  .btn-login {
-    background: var(--bleu);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.2s;
-  }
-
-  .btn-login:hover { background: #12294a; }
-
-  .login-footer {
-    margin-top: 20px;
-    font-size: 0.78rem;
-    color: #aaa;
-  }
-
-  .stats-bar {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin: 12px 0;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 6px 16px;
-    color: white;
-    font-size: 0.88rem;
-    font-weight: 600;
-  }
-
-  .stat span { color: var(--jaune); }
-
-  /* Écran d'accueil */
-  #screen-home {
-    background: white;
-    border-radius: 20px;
-    padding: 32px 24px;
-    max-width: 480px;
-    width: 100%;
-    box-shadow: var(--ombre);
-    text-align: center;
-  }
-
-  #screen-home .emoji { font-size: 4rem; margin-bottom: 16px; }
-
-  #screen-home h2 {
-    font-size: 1.5rem;
-    color: var(--bleu);
-    margin-bottom: 8px;
-  }
-
-  #screen-home p {
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .mode-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .mode-btn {
-    border: 2px solid var(--bleu);
-    background: white;
-    border-radius: 12px;
-    padding: 14px 20px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .mode-btn:hover, .mode-btn.selected {
-    background: var(--bleu);
-    color: white;
-  }
-
-  .mode-btn .icon { font-size: 1.6rem; }
-
-  .mode-btn .info strong { display: block; font-size: 1rem; }
-  .mode-btn .info small { font-size: 0.82rem; opacity: 0.75; }
-
-  .btn-start {
-    background: var(--rouge);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    transition: transform 0.15s, background 0.2s;
-    letter-spacing: 0.5px;
-  }
-
-  .btn-start:hover { background: #c1121f; transform: translateY(-1px); }
-
-  /* Écran quiz */
-  #screen-quiz {
-    max-width: 680px;
-    width: 100%;
-    display: none;
-  }
-
-  .progress-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .progress-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--jaune);
-    border-radius: 4px;
-    transition: width 0.4s ease;
-  }
-
-  .progress-text {
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .question-card {
-    background: white;
-    border-radius: 20px;
-    padding: 28px 24px;
-    box-shadow: var(--ombre);
-    margin-bottom: 16px;
-  }
-
-  .category-badge {
-    display: inline-block;
-    background: var(--gris-clair);
-    color: var(--bleu);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .question-type {
-    font-size: 0.82rem;
-    color: #888;
-    margin-bottom: 8px;
-  }
-
-  .question-text {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--bleu);
-    line-height: 1.5;
-    margin-bottom: 6px;
-  }
-
-  .question-image {
-    width: 100%;
-    max-height: 200px;
-    object-fit: contain;
-    border-radius: 10px;
-    margin: 12px 0;
-    background: var(--gris-clair);
-  }
-
-  .answers {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .answer-btn {
-    border: 2px solid #ddd;
-    background: white;
-    border-radius: 12px;
-    padding: 14px 18px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 0.97rem;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    line-height: 1.4;
-  }
-
-  .answer-btn:hover:not(:disabled) {
-    border-color: var(--bleu);
-    background: #f0f4ff;
-  }
-
-  .answer-btn .letter {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--gris-clair);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    flex-shrink: 0;
-  }
-
-  .answer-btn.correct {
-    border-color: var(--vert);
-    background: #e8f8f6;
-  }
-
-  .answer-btn.correct .letter { background: var(--vert); color: white; }
-
-  .answer-btn.wrong {
-    border-color: var(--rouge);
-    background: #fdecea;
-  }
-
-  .answer-btn.wrong .letter { background: var(--rouge); color: white; }
-
-  .answer-btn.reveal-correct {
-    border-color: var(--vert);
-    background: #e8f8f6;
-    opacity: 0.7;
-  }
-
-  .answer-btn.reveal-correct .letter { background: var(--vert); color: white; }
-
-  .feedback-box {
-    border-radius: 14px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    display: none;
-    animation: slideIn 0.3s ease;
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .feedback-box.correct {
-    background: #e8f8f6;
-    border-left: 4px solid var(--vert);
-  }
-
-  .feedback-box.wrong {
-    background: #fdecea;
-    border-left: 4px solid var(--rouge);
-  }
-
-  .feedback-box .feedback-title {
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 4px;
-  }
-
-  .feedback-box.correct .feedback-title { color: var(--vert); }
-  .feedback-box.wrong .feedback-title { color: var(--rouge); }
-
-  .feedback-box p {
-    font-size: 0.9rem;
-    color: #444;
-    line-height: 1.5;
-  }
-
-  .btn-next {
-    background: var(--bleu);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 16px 24px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 14px;
-    display: none;
-    transition: background 0.2s;
-  }
-
-  .btn-next:hover { background: #12294a; }
-
-  /* Écran résultats */
-  #screen-result {
-    background: white;
-    border-radius: 20px;
-    padding: 32px 24px;
-    max-width: 480px;
-    width: 100%;
-    box-shadow: var(--ombre);
-    text-align: center;
-    display: none;
-  }
-
-  .result-emoji { font-size: 5rem; margin-bottom: 16px; }
-
-  .result-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--bleu);
-    margin-bottom: 8px;
-  }
-
-  .result-score {
-    font-size: 3rem;
-    font-weight: 900;
-    margin: 16px 0;
-  }
-
-  .result-score.pass { color: var(--vert); }
-  .result-score.fail { color: var(--rouge); }
-
-  .result-detail {
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .result-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .result-stat {
-    background: var(--gris-clair);
-    border-radius: 12px;
-    padding: 16px;
-  }
-
-  .result-stat .num {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--bleu);
-  }
-
-  .result-stat .label {
-    font-size: 0.8rem;
-    color: #666;
-    margin-top: 2px;
-  }
-
-  .btn-replay {
-    background: var(--rouge);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 14px 28px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 10px;
-    transition: background 0.2s;
-  }
-
-  .btn-replay:hover { background: #c1121f; }
-
-  .btn-home-link {
-    background: var(--gris-clair);
-    color: var(--bleu);
-    border: none;
-    border-radius: 14px;
-    padding: 14px 28px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.2s;
-  }
-
-  .btn-home-link:hover { background: #dde3ea; }
-
-  /* Vrai/Faux style */
-  .tf-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .tf-btn {
-    border: 2px solid #ddd;
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .tf-btn:hover:not(:disabled) { transform: scale(1.03); }
-
-  .tf-btn.vrai:hover:not(:disabled),
-  .tf-btn.vrai.correct { border-color: var(--vert); background: #e8f8f6; color: var(--vert); }
-
-  .tf-btn.faux:hover:not(:disabled),
-  .tf-btn.faux.correct { border-color: var(--rouge); background: #fdecea; color: var(--rouge); }
-
-  .tf-btn.wrong { border-color: #aaa; background: #f5f5f5; color: #aaa; }
-
-  @media (max-width: 480px) {
-    header h1 { font-size: 1.4rem; }
-    .question-text { font-size: 1.05rem; }
-    .answer-btn { font-size: 0.92rem; padding: 12px 14px; }
-    #screen-home { padding: 24px 16px; }
-    .result-score { font-size: 2.4rem; }
-  }
+/* ── VARIABLES ── */
+:root {
+  --bleu:       #1e3a5f;
+  --bleu-vif:   #2563eb;
+  --rouge:      #ef4444;
+  --vert:       #22c55e;
+  --jaune:      #f59e0b;
+  --violet:     #8b5cf6;
+  --rose:       #ec4899;
+  --gris:       #f3f4f6;
+  --blanc:      #ffffff;
+  --ombre:      0 8px 32px rgba(0,0,0,0.15);
+  --radius:     20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 14px 40px;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  color: white;
+  padding: 20px 0 12px;
+  width: 100%;
+  max-width: 680px;
+}
+
+header h1 {
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+header h1 span { color: #fbbf24; }
+
+.header-meta {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+}
+
+.header-user {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge-user {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fbbf24;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.btn-logout {
+  background: rgba(239,68,68,0.2);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #fca5a5;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-logout:hover { background: rgba(239,68,68,0.35); }
+
+/* ── BARRE STATS ── */
+.stats-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 5px 14px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stat-chip .val { color: #fbbf24; }
+
+/* ── CONFETTIS ── */
+#confetti-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confetti-fall 1.2s ease-in forwards;
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── ÉCRAN LOGIN ── */
+#screen-login {
+  background: white;
+  border-radius: var(--radius);
+  padding: 36px 28px 32px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.login-car { font-size: 4rem; margin-bottom: 4px; line-height: 1; }
+
+#screen-login h2 {
+  font-size: 1.4rem;
+  color: var(--bleu);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.login-sub { color: #888; font-size: 0.88rem; margin-bottom: 24px; line-height: 1.5; }
+
+.login-field { margin-bottom: 14px; text-align: left; }
+.login-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--bleu);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.login-field input {
+  width: 100%;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.login-field input:focus { border-color: var(--bleu-vif); }
+
+.login-error {
+  background: #fef2f2;
+  color: var(--rouge);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+  display: none;
+  text-align: left;
+  border-left: 3px solid var(--rouge);
+}
+
+.btn-login {
+  background: linear-gradient(135deg, var(--bleu-vif), var(--bleu));
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 15px rgba(37,99,235,0.4);
+  letter-spacing: 0.3px;
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
+
+.login-footer { margin-top: 18px; font-size: 0.75rem; color: #bbb; }
+
+/* ── ÉCRAN ACCUEIL ── */
+#screen-home {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  margin-top: 10px;
+}
+
+.home-hero {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.home-hero .big-emoji { font-size: 3.5rem; }
+.home-hero h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--bleu);
+  margin-top: 8px;
+}
+.home-hero p { color: #666; font-size: 0.9rem; margin-top: 6px; line-height: 1.5; }
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.mode-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  background: white;
+}
+.mode-card:hover { border-color: var(--bleu-vif); background: #eff6ff; }
+.mode-card.selected {
+  border-color: var(--bleu-vif);
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+.mode-card .mc-icon { font-size: 2rem; margin-bottom: 6px; }
+.mode-card strong { display: block; font-size: 0.9rem; color: var(--bleu); font-weight: 800; }
+.mode-card small { font-size: 0.75rem; color: #888; line-height: 1.3; }
+
+.btn-start {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 17px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(239,68,68,0.4);
+  letter-spacing: 0.5px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(239,68,68,0.5); }
+
+/* ── ÉCRAN QUIZ ── */
+#screen-quiz { max-width: 680px; width: 100%; display: none; margin-top: 6px; }
+
+/* Barre de progression */
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.hud-progress { flex: 1; min-width: 120px; }
+.progress-track {
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+.progress-label { color: white; font-size: 0.8rem; font-weight: 700; margin-top: 3px; }
+
+.hud-chips { display: flex; gap: 6px; }
+
+.hud-chip {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  padding: 5px 12px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.hud-chip.streak { background: rgba(245,158,11,0.3); border-color: #f59e0b; color: #fcd34d; }
+.hud-chip.xp { background: rgba(139,92,246,0.3); border-color: #8b5cf6; color: #c4b5fd; }
+
+/* Carte question */
+.question-card {
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--ombre);
+  margin-bottom: 14px;
+}
+
+/* Image question */
+.q-image-wrap {
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  position: relative;
+  background: #e5e7eb;
+}
+.q-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.q-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+.q-image-cat {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cat-badge {
+  background: white;
+  color: var(--bleu);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.type-badge {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* Corps de la question */
+.q-body { padding: 20px 20px 0; }
+
+.q-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--bleu);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Réponses QCM */
+.answers { display: flex; flex-direction: column; gap: 9px; padding: 0 20px 20px; }
+
+.answer-btn {
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 14px;
+  padding: 13px 16px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: #374151;
+}
+.answer-btn:hover:not(:disabled) {
+  border-color: var(--bleu-vif);
+  background: #eff6ff;
+  transform: translateX(3px);
+}
+.answer-btn .letter {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  color: var(--bleu);
+  transition: all 0.2s;
+}
+
+.answer-btn.correct {
+  border-color: var(--vert);
+  background: #f0fdf4;
+  color: #166534;
+  animation: pop-correct 0.35s ease;
+}
+.answer-btn.correct .letter { background: var(--vert); color: white; }
+
+@keyframes pop-correct {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.answer-btn.wrong {
+  border-color: var(--rouge);
+  background: #fef2f2;
+  color: #991b1b;
+  animation: shake 0.5s ease;
+}
+.answer-btn.wrong .letter { background: var(--rouge); color: white; }
+
+.answer-btn.reveal-correct {
+  border-color: var(--vert);
+  background: #f0fdf4;
+  opacity: 0.75;
+}
+.answer-btn.reveal-correct .letter { background: var(--vert); color: white; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* Vrai/Faux */
+.tf-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+.tf-btn {
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.tf-btn .tf-icon { font-size: 2rem; }
+.tf-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.tf-btn.vrai:hover:not(:disabled),
+.tf-btn.vrai.correct { border-color: var(--vert); background: #f0fdf4; color: #166534; }
+.tf-btn.faux:hover:not(:disabled),
+.tf-btn.faux.correct { border-color: var(--rouge); background: #fef2f2; color: #991b1b; }
+.tf-btn.wrong { border-color: #d1d5db; background: #f9fafb; color: #9ca3af; opacity: 0.7; }
+
+/* Feedback */
+.feedback-box {
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 0 20px;
+  display: none;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.feedback-box.correct { background: #f0fdf4; border-left: 4px solid var(--vert); }
+.feedback-box.wrong   { background: #fef2f2; border-left: 4px solid var(--rouge); }
+.feedback-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.feedback-box.correct .feedback-title { color: #16a34a; }
+.feedback-box.wrong   .feedback-title { color: #dc2626; }
+.feedback-box p { font-size: 0.88rem; color: #555; line-height: 1.55; }
+
+.btn-next {
+  background: linear-gradient(135deg, var(--bleu-vif), var(--bleu));
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 15px 24px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: calc(100% - 40px);
+  margin: 14px 20px 20px;
+  display: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 15px rgba(37,99,235,0.35);
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+
+/* ── STREAK POPUP ── */
+#streak-popup {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.5);
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  border-radius: 20px;
+  padding: 14px 28px;
+  font-size: 1.3rem;
+  font-weight: 900;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(239,68,68,0.5);
+  white-space: nowrap;
+}
+#streak-popup.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── ÉCRAN RÉSULTAT ── */
+#screen-result {
+  background: white;
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  text-align: center;
+  display: none;
+  margin-top: 10px;
+}
+.result-emoji { font-size: 5rem; margin-bottom: 12px; line-height: 1; }
+.result-title { font-size: 1.6rem; font-weight: 900; color: var(--bleu); margin-bottom: 4px; }
+
+.result-score-ring {
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  margin: 16px auto;
+  border: 8px solid;
+}
+.result-score-ring.pass { border-color: var(--vert); background: #f0fdf4; }
+.result-score-ring.fail { border-color: var(--rouge); background: #fef2f2; }
+.result-score-ring .num { font-size: 2.2rem; font-weight: 900; line-height: 1; }
+.result-score-ring.pass .num { color: #16a34a; }
+.result-score-ring.fail .num { color: #dc2626; }
+.result-score-ring .denom { font-size: 0.85rem; color: #888; font-weight: 600; }
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+.result-stat {
+  background: var(--gris);
+  border-radius: 14px;
+  padding: 14px 8px;
+}
+.result-stat .rs-num { font-size: 1.6rem; font-weight: 900; color: var(--bleu); }
+.result-stat .rs-label { font-size: 0.73rem; color: #888; margin-top: 2px; line-height: 1.3; }
+
+.result-detail {
+  color: #555; font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  padding: 14px;
+  background: var(--gris);
+  border-radius: 14px;
+}
+
+.btn-replay {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white; border: none; border-radius: 14px;
+  padding: 15px; font-size: 1rem; font-weight: 800;
+  cursor: pointer; width: 100%; margin-bottom: 10px;
+  transition: transform 0.15s;
+  box-shadow: 0 4px 15px rgba(239,68,68,0.35);
+}
+.btn-replay:hover { transform: translateY(-2px); }
+
+.btn-home-r {
+  background: var(--gris); color: var(--bleu);
+  border: none; border-radius: 14px;
+  padding: 14px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; width: 100%;
+  transition: background 0.2s;
+}
+.btn-home-r:hover { background: #e5e7eb; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 440px) {
+  header h1 { font-size: 1.25rem; }
+  .q-text { font-size: 1rem; }
+  .answer-btn { font-size: 0.9rem; padding: 11px 13px; }
+  .q-image-wrap { height: 150px; }
+  .mode-grid { grid-template-columns: 1fr 1fr; }
+  .result-grid { grid-template-columns: repeat(3,1fr); }
+}
 </style>
 </head>
 <body>
 
+<!-- CONFETTIS -->
+<div id="confetti-container"></div>
+<!-- STREAK POPUP -->
+<div id="streak-popup"></div>
+
 <header>
   <h1>🚗 Le code de la route du <span>Papounet</span></h1>
-  <p id="header-subtitle">Application de révision — Examen français</p>
+  <div class="header-meta" id="header-subtitle">Application de révision — Examen français 🇫🇷</div>
   <div class="header-user" id="header-user" style="display:none">
-    Connecté en tant que <strong id="header-username"></strong>
+    <span class="badge-user">👤 <span id="header-username"></span></span>
     <button class="btn-logout" onclick="logout()">Déconnexion</button>
   </div>
   <div class="stats-bar" id="global-stats" style="display:none">
-    <div class="stat">Session : <span id="stat-session">0/0</span></div>
-    <div class="stat">Score total : <span id="stat-total">0%</span></div>
+    <div class="stat-chip">🎯 Session <span class="val" id="stat-session">0/0</span></div>
+    <div class="stat-chip">⭐ XP total <span class="val" id="stat-xp-total">0</span></div>
+    <div class="stat-chip">🔥 Meilleure série <span class="val" id="stat-best-streak">0</span></div>
   </div>
 </header>
 
-<!-- ÉCRAN LOGIN -->
+<!-- ════ ÉCRAN LOGIN ════ -->
 <div id="screen-login">
-  <div class="login-emoji">🔐</div>
-  <h2>Bienvenue !</h2>
-  <p class="login-sub">Entre ton identifiant et ton mot de passe pour accéder à l'application.</p>
+  <div class="login-car">🚗</div>
+  <h2>Bonjour !</h2>
+  <p class="login-sub">Entre ton identifiant et ton mot de passe pour accéder à l'application du Papounet.</p>
 
   <div class="login-field">
     <label for="input-user">Identifiant</label>
-    <input type="text" id="input-user" placeholder="Ton prénom..." autocomplete="username" onkeydown="if(event.key==='Enter') doLogin()">
+    <input type="text" id="input-user" placeholder="Ton prénom..." autocomplete="username"
+      onkeydown="if(event.key==='Enter') doLogin()">
   </div>
   <div class="login-field">
     <label for="input-pass">Mot de passe</label>
-    <input type="password" id="input-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+    <input type="password" id="input-pass" placeholder="••••••••" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter') doLogin()">
   </div>
   <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
   <button class="btn-login" onclick="doLogin()">Se connecter →</button>
   <p class="login-footer">Application privée — accès sur invitation du Papounet 🚗</p>
 </div>
 
-<!-- ÉCRAN ACCUEIL -->
-<div id="screen-home">
-  <div class="emoji">📋</div>
-  <h2>Prête à réviser ?</h2>
-  <p>Entraîne-toi avec des questions similaires à l'examen officiel.<br>
-  Le vrai examen : <strong>40 questions, max 5 fautes</strong> pour réussir.</p>
-
-  <div class="mode-buttons">
-    <button class="mode-btn selected" data-mode="mix" onclick="selectMode(this)">
-      <span class="icon">🎲</span>
-      <div class="info">
-        <strong>Mode Mix</strong>
-        <small>QCM + Vrai/Faux — toutes thématiques</small>
-      </div>
-    </button>
-    <button class="mode-btn" data-mode="qcm" onclick="selectMode(this)">
-      <span class="icon">📝</span>
-      <div class="info">
-        <strong>QCM uniquement</strong>
-        <small>Questions à choix multiples</small>
-      </div>
-    </button>
-    <button class="mode-btn" data-mode="tf" onclick="selectMode(this)">
-      <span class="icon">✅</span>
-      <div class="info">
-        <strong>Vrai / Faux</strong>
-        <small>Rapide, pour s'échauffer</small>
-      </div>
-    </button>
-    <button class="mode-btn" data-mode="exam" onclick="selectMode(this)">
-      <span class="icon">🎓</span>
-      <div class="info">
-        <strong>Mode Examen</strong>
-        <small>40 questions, conditions réelles</small>
-      </div>
-    </button>
+<!-- ════ ÉCRAN ACCUEIL ════ -->
+<div id="screen-home" style="display:none">
+  <div class="home-hero">
+    <div class="big-emoji">🏎️</div>
+    <h2>Prête à réviser ?</h2>
+    <p>Entraîne-toi avec des questions similaires à l'examen officiel.<br>
+    Examen réel : <strong>40 questions, max 5 fautes</strong>.</p>
   </div>
 
-  <button class="btn-start" onclick="startQuiz()">Commencer ▶</button>
+  <div class="mode-grid">
+    <div class="mode-card selected" data-mode="mix" onclick="selectMode(this)">
+      <div class="mc-icon">🎲</div>
+      <strong>Mix</strong>
+      <small>QCM + Vrai/Faux<br>toutes thématiques</small>
+    </div>
+    <div class="mode-card" data-mode="qcm" onclick="selectMode(this)">
+      <div class="mc-icon">📝</div>
+      <strong>QCM</strong>
+      <small>Choix multiples<br>uniquement</small>
+    </div>
+    <div class="mode-card" data-mode="tf" onclick="selectMode(this)">
+      <div class="mc-icon">✅</div>
+      <strong>Vrai / Faux</strong>
+      <small>Rapide pour<br>s'échauffer</small>
+    </div>
+    <div class="mode-card" data-mode="exam" onclick="selectMode(this)">
+      <div class="mc-icon">🎓</div>
+      <strong>Examen</strong>
+      <small>40 questions<br>conditions réelles</small>
+    </div>
+  </div>
+
+  <button class="btn-start" onclick="startQuiz()">⚡ Commencer !</button>
 </div>
 
-<!-- ÉCRAN QUIZ -->
+<!-- ════ ÉCRAN QUIZ ════ -->
 <div id="screen-quiz">
-  <div class="progress-container">
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <div class="progress-text" id="progress-text">1 / 20</div>
+
+  <div class="hud">
+    <div class="hud-progress">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="progress-text">1 / 20</div>
+    </div>
+    <div class="hud-chips">
+      <div class="hud-chip streak" id="hud-streak">🔥 0</div>
+      <div class="hud-chip xp" id="hud-xp">⭐ 0 XP</div>
+    </div>
   </div>
 
-  <div class="question-card">
-    <div class="category-badge" id="q-category">Signalisation</div>
-    <div class="question-type" id="q-type"></div>
-    <div class="question-text" id="q-text"></div>
+  <div class="question-card" id="question-card">
+    <!-- IMAGE -->
+    <div class="q-image-wrap">
+      <img id="q-img" src="" alt="" loading="eager" onerror="this.parentElement.style.background='#1e3a5f'">
+      <div class="q-image-overlay"></div>
+      <div class="q-image-cat">
+        <span class="cat-badge" id="q-category">Catégorie</span>
+        <span class="type-badge" id="q-type-badge">QCM</span>
+      </div>
+    </div>
+
+    <!-- QUESTION -->
+    <div class="q-body">
+      <div class="q-text" id="q-text"></div>
+    </div>
+
+    <!-- RÉPONSES -->
     <div id="q-answers"></div>
+
+    <!-- FEEDBACK -->
     <div class="feedback-box" id="feedback">
       <div class="feedback-title" id="feedback-title"></div>
       <p id="feedback-text"></p>
     </div>
+
     <button class="btn-next" id="btn-next" onclick="nextQuestion()"></button>
   </div>
 </div>
 
-<!-- ÉCRAN RÉSULTAT -->
+<!-- ════ ÉCRAN RÉSULTAT ════ -->
 <div id="screen-result">
   <div class="result-emoji" id="result-emoji">🎉</div>
   <div class="result-title" id="result-title">Bravo !</div>
-  <div class="result-score" id="result-score">38/40</div>
-  <div class="result-grid">
-    <div class="result-stat"><div class="num" id="res-correct">38</div><div class="label">Bonnes réponses</div></div>
-    <div class="result-stat"><div class="num" id="res-wrong">2</div><div class="label">Erreurs</div></div>
+
+  <div class="result-score-ring" id="result-ring">
+    <div class="num" id="result-score">38/40</div>
+    <div class="denom" id="result-denom">questions</div>
   </div>
+
+  <div class="result-grid">
+    <div class="result-stat">
+      <div class="rs-num" id="res-correct" style="color:#22c55e">-</div>
+      <div class="rs-label">Bonnes<br>réponses</div>
+    </div>
+    <div class="result-stat">
+      <div class="rs-num" id="res-wrong" style="color:#ef4444">-</div>
+      <div class="rs-label">Erreurs</div>
+    </div>
+    <div class="result-stat">
+      <div class="rs-num" id="res-xp" style="color:#8b5cf6">-</div>
+      <div class="rs-label">XP<br>gagnés</div>
+    </div>
+  </div>
+
   <div class="result-detail" id="result-detail"></div>
+
   <button class="btn-replay" onclick="startQuiz()">🔄 Rejouer ce mode</button>
-  <button class="btn-home-link" onclick="goHome()">🏠 Choisir un autre mode</button>
+  <button class="btn-home-r" onclick="goHome()">🏠 Choisir un autre mode</button>
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// UTILISATEURS AUTORISÉS
-// Pour ajouter un utilisateur : { user: "prenom", pass: "motdepasse", actif: true }
-// Pour bloquer un utilisateur : passer actif à false
-// ─────────────────────────────────────────────
+// ════════════════════════════════════════════
+// UTILISATEURS
+// ════════════════════════════════════════════
 const USERS = [
-  { user: "eugenie",  pass: "permis2027",  actif: true,  nom: "Eugénie" },
-  { user: "papounet", pass: "jesuislepapa", actif: true,  nom: "Papounet" },
-  // Ajoutez des utilisateurs ici si besoin :
-  // { user: "maman", pass: "motdepasse", actif: true, nom: "Maman" },
+  { user: "eugenie",  pass: "permis2027",   actif: true, nom: "Eugénie" },
+  { user: "papounet", pass: "jesuislepapa", actif: true, nom: "Papounet" },
 ];
 
 let currentUser = null;
 
+// ════════════════════════════════════════════
+// IMAGES PAR CATÉGORIE (Unsplash)
+// ════════════════════════════════════════════
+const CAT_IMAGES = {
+  "Signalisation":       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=300&fit=crop&auto=format",
+  "Priorités":           "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&h=300&fit=crop&auto=format",
+  "Vitesses":            "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=700&h=300&fit=crop&auto=format",
+  "Alcool & Stupéfiants":"https://images.unsplash.com/photo-1551024709-8f23c3d46f09?w=700&h=300&fit=crop&auto=format",
+  "Distances & Freinage":"https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=700&h=300&fit=crop&auto=format",
+  "Dépassement":         "https://images.unsplash.com/photo-1568544694990-24cd4df0e6a3?w=700&h=300&fit=crop&auto=format",
+  "Ceinture & Sécurité": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=700&h=300&fit=crop&auto=format",
+  "Stationnement":       "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=700&h=300&fit=crop&auto=format",
+  "Éclairage":           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&h=300&fit=crop&auto=format",
+  "Autoroute":           "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=700&h=300&fit=crop&auto=format",
+  "Environnement":       "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=700&h=300&fit=crop&auto=format",
+  "Voies":               "https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=700&h=300&fit=crop&auto=format",
+  "Comportement":        "https://images.unsplash.com/photo-1527786356703-4b100091cd2c?w=700&h=300&fit=crop&auto=format",
+  "Permis & Infractions":"https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?w=700&h=300&fit=crop&auto=format",
+  "Charge & Remorque":   "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=700&h=300&fit=crop&auto=format",
+};
+
+// ════════════════════════════════════════════
+// BASE DE QUESTIONS
+// ════════════════════════════════════════════
+const questions = [
+  // ── SIGNALISATION ──
+  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau rond à bordure rouge avec un chiffre ?",
+    opts:["Une limitation de vitesse obligatoire","Une vitesse recommandée","La fin d'une limitation","Une zone de danger"],
+    ans:0, exp:"Un panneau rond à fond blanc, chiffre noir et bordure rouge est une limitation de vitesse obligatoire." },
+
+  { cat:"Signalisation", type:"qcm", q:"Un panneau triangulaire à bordure rouge signale :",
+    opts:["Une interdiction","Un danger","Une obligation","Une information"],
+    ans:1, exp:"Les panneaux triangulaires à bordure rouge sont des panneaux de danger." },
+
+  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau rond bleu avec une flèche blanche ?",
+    opts:["Une recommandation de direction","Une obligation de suivre cette direction","Une voie sans issue","Une autoroute proche"],
+    ans:1, exp:"Les panneaux ronds bleus sont des panneaux d'obligation." },
+
+  { cat:"Signalisation", type:"tf", q:"Un feu orange fixe signifie que vous devez vous arrêter si vous le pouvez sans danger.",
+    ans:true, exp:"Le feu orange fixe impose de s'arrêter si c'est possible sans danger." },
+
+  { cat:"Signalisation", type:"tf", q:"Un feu rouge clignotant signifie la même chose qu'un feu rouge fixe.",
+    ans:false, exp:"Un feu rouge clignotant se trouve aux passages à niveau et signifie qu'un train approche." },
+
+  { cat:"Signalisation", type:"qcm", q:"La ligne blanche continue au centre de la chaussée signifie :",
+    opts:["Le dépassement est interdit","Le dépassement est autorisé","La vitesse est limitée à 50 km/h","L'arrêt est interdit"],
+    ans:0, exp:"Une ligne blanche continue (axiale) interdit de la franchir. Le dépassement est donc interdit." },
+
+  { cat:"Signalisation", type:"qcm", q:"Quelle couleur ont les panneaux d'autoroute ?",
+    opts:["Vert","Bleu","Orange","Blanc"],
+    ans:1, exp:"Les panneaux directionnels d'autoroute sont bleus. Les verts sont pour les voies express." },
+
+  { cat:"Signalisation", type:"tf", q:"Un panneau de fin de limitation de vitesse (barré) permet de rouler à toute vitesse.",
+    ans:false, exp:"On revient à la vitesse maximale autorisée pour ce type de route (ex. 80 km/h hors agglo), pas à vitesse illimitée." },
+
+  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau 'STOP' ?",
+    opts:["Ralentir et passer si la voie est libre","S'arrêter complètement et céder le passage","S'arrêter uniquement si un véhicule arrive","Ralentir à 20 km/h"],
+    ans:1, exp:"Au panneau STOP, l'arrêt est obligatoire même en l'absence de tout autre véhicule." },
+
+  { cat:"Signalisation", type:"qcm", q:"Le panneau 'Cédez le passage' (triangle inversé) oblige à :",
+    opts:["S'arrêter complètement","Laisser passer les véhicules venant de droite uniquement","Laisser passer tous les véhicules sur la voie prioritaire","Klaxonner avant de passer"],
+    ans:2, exp:"Le panneau cédez le passage oblige à laisser passer tous les véhicules engagés sur la voie prioritaire." },
+
+  // ── PRIORITÉS ──
+  { cat:"Priorités", type:"qcm", q:"En l'absence de signalisation, à une intersection, vous devez :",
+    opts:["Passer en premier car vous allez tout droit","Céder le passage aux véhicules venant de votre droite","Klaxonner pour signaler votre présence","Passer en premier si vous arrivez avant l'autre"],
+    ans:1, exp:"La règle de priorité à droite s'applique : sans signalisation, on laisse passer les véhicules venant de sa droite." },
+
+  { cat:"Priorités", type:"tf", q:"Les véhicules circulant sur un rond-point sont toujours prioritaires sur ceux qui y entrent.",
+    ans:true, exp:"Depuis 1984, les véhicules déjà engagés dans le giratoire sont prioritaires. Les entrants cèdent le passage." },
+
+  { cat:"Priorités", type:"qcm", q:"Quelle est la priorité des véhicules d'urgence (gyrophare + sirène) ?",
+    opts:["Ils n'ont pas de priorité spéciale en ville","Ils sont prioritaires sur tous les autres usagers","Ils sont prioritaires uniquement sur autoroute","Ils sont prioritaires uniquement aux feux rouges"],
+    ans:1, exp:"Les véhicules prioritaires (police, pompiers, SAMU) doivent être laissés passer immédiatement." },
+
+  { cat:"Priorités", type:"tf", q:"Sur une voie avec 'priorité à droite', un cycliste venant de votre droite est prioritaire sur vous.",
+    ans:true, exp:"La règle de priorité à droite s'applique à tous les usagers, y compris les cyclistes." },
+
+  { cat:"Priorités", type:"qcm", q:"En agglomération, qui est prioritaire sur le reste de la circulation ?",
+    opts:["Les taxis","Les tramways","Les piétons sur passage protégé","Les bus en sortie d'arrêt uniquement"],
+    ans:2, exp:"Les piétons engagés sur un passage protégé sont prioritaires sur tous les véhicules." },
+
+  // ── VITESSES ──
+  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale autorisée sur autoroute par temps sec ?",
+    opts:["110 km/h","120 km/h","130 km/h","150 km/h"],
+    ans:2, exp:"Sur autoroute par temps sec, la vitesse maximale est de 130 km/h." },
+
+  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale en agglomération (sauf indication contraire) ?",
+    opts:["30 km/h","50 km/h","70 km/h","80 km/h"],
+    ans:1, exp:"En agglomération, la vitesse est limitée à 50 km/h sauf panneau contraire." },
+
+  { cat:"Vitesses", type:"qcm", q:"Sur une route à double sens sans séparateur central, hors agglomération, la vitesse maximale est :",
+    opts:["80 km/h","90 km/h","100 km/h","110 km/h"],
+    ans:0, exp:"Depuis juillet 2018, la vitesse maximale sur route bidirectionnelle hors agglomération est de 80 km/h." },
+
+  { cat:"Vitesses", type:"tf", q:"Par temps de pluie sur autoroute, la vitesse maximale est de 110 km/h.",
+    ans:true, exp:"Par temps de pluie ou visibilité réduite sur autoroute, la vitesse maximale passe à 110 km/h." },
+
+  { cat:"Vitesses", type:"qcm", q:"La vitesse maximale pour un conducteur en période probatoire sur autoroute est :",
+    opts:["110 km/h","120 km/h","130 km/h","Identique aux autres conducteurs"],
+    ans:0, exp:"Le conducteur novice est limité à 110 km/h sur autoroute (3 premières années)." },
+
+  { cat:"Vitesses", type:"tf", q:"En cas de brouillard dense (visibilité < 50 m), la vitesse est limitée à 50 km/h sur toutes les routes.",
+    ans:true, exp:"Quand la visibilité est inférieure à 50 mètres, la vitesse maximale est de 50 km/h partout." },
+
+  // ── ALCOOL ──
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Le taux d'alcoolémie maximal autorisé pour un conducteur expérimenté est :",
+    opts:["0,2 g/L de sang","0,5 g/L de sang","0,8 g/L de sang","1,0 g/L de sang"],
+    ans:1, exp:"Le taux légal est de 0,5 g/L de sang. À partir de 0,8 g/L, c'est un délit." },
+
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Pour un conducteur en période probatoire, le taux maximal est :",
+    opts:["0,0 g/L","0,2 g/L","0,5 g/L","Identique aux autres"],
+    ans:1, exp:"Pour les conducteurs novices, le taux maximal autorisé est de 0,2 g/L de sang." },
+
+  { cat:"Alcool & Stupéfiants", type:"tf", q:"Conduire après avoir consommé du cannabis est légal si l'on ne se sent pas drogué.",
+    ans:false, exp:"Conduire après consommation de stupéfiants est interdit, peu importe la sensation ressentie." },
+
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Un taux d'alcoolémie de 0,8 g/L ou plus est :",
+    opts:["Une simple contravention","Un délit pénal","Légal en dehors des agglomérations","Légal si pas d'accident"],
+    ans:1, exp:"À partir de 0,8 g/L de sang, c'est un délit pénal." },
+
+  // ── DISTANCES ──
+  { cat:"Distances & Freinage", type:"qcm", q:"La distance de sécurité entre deux véhicules sur route est d'au moins :",
+    opts:["1 seconde","2 secondes","3 secondes","5 secondes"],
+    ans:1, exp:"La règle des 2 secondes : il faut au minimum 2 secondes d'intervalle avec le véhicule devant." },
+
+  { cat:"Distances & Freinage", type:"tf", q:"Sur sol mouillé, la distance de freinage est à peu près le double de celle sur sol sec.",
+    ans:true, exp:"L'adhérence est réduite sur chaussée mouillée. La distance de freinage peut doubler." },
+
+  { cat:"Distances & Freinage", type:"qcm", q:"Le temps de réaction moyen d'un conducteur normal est d'environ :",
+    opts:["0,5 seconde","1 seconde","2 secondes","3 secondes"],
+    ans:1, exp:"Le temps de réaction moyen est d'environ 1 seconde. À 90 km/h, cela représente 25 mètres." },
+
+  { cat:"Distances & Freinage", type:"qcm", q:"À 50 km/h sur sol sec, quelle est la distance d'arrêt totale approximative ?",
+    opts:["15 mètres","25 mètres","35 mètres","50 mètres"],
+    ans:2, exp:"À 50 km/h : distance de réaction (~14 m) + freinage (~14-20 m) = environ 35 m." },
+
+  // ── DÉPASSEMENT ──
+  { cat:"Dépassement", type:"qcm", q:"Le dépassement est interdit :",
+    opts:["Au sommet d'une côte","En agglomération uniquement","Sur autoroute","Sur ligne blanche discontinue"],
+    ans:0, exp:"Le dépassement est interdit au sommet d'une côte, dans les virages, aux passages à niveau." },
+
+  { cat:"Dépassement", type:"tf", q:"On peut dépasser par la droite un véhicule dont le conducteur a signalé qu'il tournait à gauche.",
+    ans:true, exp:"Exception : si un véhicule s'apprête à tourner à gauche et l'a signalé, on peut le dépasser par la droite." },
+
+  { cat:"Dépassement", type:"qcm", q:"Lors d'un dépassement, vous vous rabattez quand :",
+    opts:["Le capot du véhicule dépassé est visible dans votre rétroviseur","Vous voyez le véhicule entier dans votre rétroviseur intérieur","Immédiatement après avoir dépassé","Vous klaxonnez"],
+    ans:1, exp:"On se rabat uniquement après avoir vu le véhicule dépassé entier dans le rétroviseur intérieur." },
+
+  // ── CEINTURE ──
+  { cat:"Ceinture & Sécurité", type:"tf", q:"La ceinture de sécurité est obligatoire pour le conducteur et tous les passagers.",
+    ans:true, exp:"Le port de la ceinture est obligatoire pour tous les occupants, à l'avant comme à l'arrière." },
+
+  { cat:"Ceinture & Sécurité", type:"qcm", q:"Un enfant de 5 ans doit être installé :",
+    opts:["Sur le siège avant avec ceinture","Dans un siège homologué adapté à son poids, de préférence à l'arrière","Sans siège si la ceinture passe","À l'avant uniquement si l'airbag est désactivé"],
+    ans:1, exp:"Tout enfant de moins de 10 ans doit utiliser un siège homologué adapté à son poids." },
+
+  { cat:"Ceinture & Sécurité", type:"tf", q:"On peut utiliser un téléphone portable sur haut-parleur posé sur le tableau de bord.",
+    ans:false, exp:"Tenir un téléphone à la main, même sur haut-parleur, est interdit. Seul le kit mains-libres intégré est autorisé." },
+
+  { cat:"Ceinture & Sécurité", type:"qcm", q:"Le port du casque est obligatoire pour :",
+    opts:["Les motocyclistes uniquement","Les motocyclistes et cyclomotoristes","Tous les deux-roues y compris vélos","Les deux-roues motorisés uniquement"],
+    ans:3, exp:"Le casque est obligatoire pour tous les conducteurs de deux-roues motorisés." },
+
+  // ── STATIONNEMENT ──
+  { cat:"Stationnement", type:"qcm", q:"Le stationnement est interdit à moins de combien d'un carrefour ?",
+    opts:["À moins de 5 m","À moins de 10 m","À moins de 15 m","À moins de 3 m"],
+    ans:0, exp:"L'arrêt et le stationnement sont interdits à moins de 5 mètres en amont d'une intersection." },
+
+  { cat:"Stationnement", type:"tf", q:"On peut s'arrêter brièvement sur une ligne jaune continue longeant le trottoir.",
+    ans:false, exp:"Une ligne jaune continue interdit tout arrêt et tout stationnement, même momentané." },
+
+  { cat:"Stationnement", type:"qcm", q:"Quelle est la différence entre un arrêt et un stationnement ?",
+    opts:["Aucune différence","L'arrêt est < 3 min, le stationnement au-delà","L'arrêt : conducteur reste prêt à repartir ; stationnement : il s'éloigne","L'arrêt est autorisé partout"],
+    ans:2, exp:"L'arrêt : conducteur reste dans ou près du véhicule. Le stationnement : il quitte son véhicule." },
+
+  // ── ÉCLAIRAGE ──
+  { cat:"Éclairage", type:"qcm", q:"Quand allume-t-on ses feux de route (pleins phares) ?",
+    opts:["Toujours la nuit","La nuit hors agglo, route peu éclairée, aucun véhicule en face","Uniquement sur autoroute","Uniquement par brouillard"],
+    ans:1, exp:"Les feux de route s'utilisent la nuit hors agglomération, sans véhicule venant en sens inverse." },
+
+  { cat:"Éclairage", type:"tf", q:"Les feux de jour (DRL) remplacent les feux de croisement la nuit.",
+    ans:false, exp:"Les feux de jour (DRL) sont uniquement pour la visibilité de jour. La nuit, les feux de croisement sont obligatoires." },
+
+  { cat:"Éclairage", type:"qcm", q:"Les feux antibrouillard arrière doivent être utilisés :",
+    opts:["Dès qu'il pleut","Uniquement quand la visibilité est inférieure à 50 mètres","Toujours la nuit","Uniquement sur autoroute"],
+    ans:1, exp:"Les feux antibrouillard arrière ne s'utilisent qu'en cas de brouillard ou forte pluie (visibilité < 50 m)." },
+
+  // ── AUTOROUTE ──
+  { cat:"Autoroute", type:"qcm", q:"Sur autoroute, la bande d'arrêt d'urgence (BAU) est réservée à :",
+    opts:["Rouler lentement en bouchon","Dépasser les véhicules lents","S'arrêter uniquement en cas d'urgence ou panne","Circuler à moins de 30 km/h"],
+    ans:2, exp:"La BAU ne doit être utilisée qu'en cas d'arrêt forcé (panne, urgence médicale)." },
+
+  { cat:"Autoroute", type:"tf", q:"Il est interdit de faire demi-tour sur autoroute.",
+    ans:true, exp:"Le demi-tour et la marche arrière sont strictement interdits sur autoroute." },
+
+  { cat:"Autoroute", type:"qcm", q:"Sur autoroute à 3 voies, quelle voie est pour la circulation normale ?",
+    opts:["La voie du milieu","La voie de gauche","La voie de droite","Toutes les voies sont équivalentes"],
+    ans:2, exp:"La voie de droite est la voie normale. Les voies de gauche sont pour le dépassement." },
+
+  // ── ENVIRONNEMENT ──
+  { cat:"Environnement", type:"tf", q:"En cas d'accident avec blessés, le premier réflexe est de déplacer les blessés.",
+    ans:false, exp:"Il ne faut JAMAIS déplacer un blessé sauf danger immédiat. Le déplacer risque d'aggraver les lésions vertébrales." },
+
+  { cat:"Environnement", type:"qcm", q:"Quel numéro appeler en cas d'accident avec blessés ?",
+    opts:["15 (SAMU)","17 (Police)","18 (Pompiers)","15, 17 ou 18 selon la situation — ou le 112"],
+    ans:3, exp:"Le 112 est le numéro d'urgence européen. Le 15, 17 et 18 sont aussi valides." },
+
+  { cat:"Environnement", type:"qcm", q:"Le triangle de présignalisation doit être placé à quelle distance du véhicule ?",
+    opts:["À 10 mètres","À 30 mètres","À 50 mètres","À 100 mètres"],
+    ans:1, exp:"Le triangle doit être posé à 30 mètres minimum en amont du véhicule (50 m sur autoroute)." },
+
+  { cat:"Environnement", type:"tf", q:"Le gilet de sécurité doit être porté avant de sortir du véhicule en panne sur la chaussée.",
+    ans:true, exp:"En cas d'immobilisation sur la chaussée, le gilet de haute visibilité doit être enfilé AVANT de sortir." },
+
+  { cat:"Environnement", type:"qcm", q:"Le contrôle technique est obligatoire pour les voitures de tourisme tous les :",
+    opts:["1 an","2 ans","3 ans","4 ans"],
+    ans:1, exp:"Le contrôle technique est obligatoire tous les 2 ans (après la première visite à 4 ans)." },
+
+  { cat:"Environnement", type:"tf", q:"Jeter un mégot par la vitre est une infraction au code de la route.",
+    ans:true, exp:"Jeter un objet depuis un véhicule est une contravention de 4e classe (amende jusqu'à 750 €)." },
+
+  // ── VOIES ──
+  { cat:"Voies", type:"tf", q:"Sur une route à deux voies dans le même sens, on peut rouler sur l'une ou l'autre indifféremment.",
+    ans:false, exp:"Il faut circuler sur la voie de droite. La voie de gauche est réservée au dépassement." },
+
+  { cat:"Voies", type:"qcm", q:"Un couloir de bus (voie réservée aux bus) est :",
+    opts:["Interdit à tous sauf aux bus","Autorisé aux taxis et vélos également","Interdit aux vélos","Autorisé aux véhicules d'urgence uniquement"],
+    ans:1, exp:"Les couloirs de bus sont généralement autorisés aux bus, taxis et vélos." },
+
+  { cat:"Voies", type:"tf", q:"Il est permis de s'engager dans un carrefour si on risque d'y être bloqué.",
+    ans:false, exp:"Il est interdit de s'engager dans un carrefour si cela risque de bloquer la circulation, même feu vert." },
+
+  // ── COMPORTEMENT ──
+  { cat:"Comportement", type:"qcm", q:"La fatigue au volant :",
+    opts:["N'est dangereuse qu'après 10 h de conduite","Peut provoquer des endormissements dès la 2e heure","Ne concerne que les conducteurs de nuit","Est compensée par la caféine"],
+    ans:1, exp:"Les effets de la fatigue peuvent apparaître dès 2 heures de conduite continue." },
+
+  { cat:"Comportement", type:"qcm", q:"Que faire si vos roues avant perdent l'adhérence (aquaplanage) ?",
+    opts:["Freiner brusquement","Accélérer pour sortir de la zone","Relâcher l'accélérateur progressivement sans braquer","Braquer fortement"],
+    ans:2, exp:"En cas d'aquaplanage : relâcher l'accélérateur progressivement, tenir le volant sans braquer." },
+
+  { cat:"Comportement", type:"tf", q:"L'usage du klaxon est autorisé en agglomération uniquement en cas de danger immédiat.",
+    ans:true, exp:"En agglomération, le klaxon ne peut être utilisé qu'en cas de danger immédiat." },
+
+  // ── PERMIS ──
+  { cat:"Permis & Infractions", type:"qcm", q:"Le permis probatoire commence avec combien de points ?",
+    opts:["6 points","8 points","10 points","12 points"],
+    ans:0, exp:"Le permis probatoire démarre à 6 points et augmente de 2 points par an sans infraction." },
+
+  { cat:"Permis & Infractions", type:"qcm", q:"Combien de points coûte un excès de vitesse entre 20 et 30 km/h au-dessus ?",
+    opts:["1 point","2 points","3 points","4 points"],
+    ans:2, exp:"Un excès de 20 à moins de 30 km/h entraîne le retrait de 3 points." },
+
+  { cat:"Permis & Infractions", type:"tf", q:"On peut conduire avec un permis suspendu si c'est pour une urgence médicale.",
+    ans:false, exp:"Conduire avec un permis suspendu est un délit pénal, quelle que soit la raison." },
+
+  // ── CHARGE ──
+  { cat:"Charge & Remorque", type:"qcm", q:"Avec une remorque lourde (PTAC > 750 kg), la vitesse max sur autoroute est :",
+    opts:["130 km/h","110 km/h","100 km/h","90 km/h"],
+    ans:1, exp:"Avec une remorque de plus de 750 kg, la vitesse est limitée à 110 km/h sur autoroute." },
+
+  { cat:"Charge & Remorque", type:"tf", q:"Un chargement qui dépasse de plus d'un mètre à l'arrière doit être signalé par un dispositif réfléchissant.",
+    ans:true, exp:"Tout dépassement de chargement à l'arrière de plus d'un mètre doit être signalé." },
+];
+
+// ════════════════════════════════════════════
+// ÉTAT APPLICATION
+// ════════════════════════════════════════════
+let selectedMode   = 'mix';
+let quizQuestions  = [];
+let currentIndex   = 0;
+let score          = 0;
+let answered       = false;
+let streak         = 0;
+let bestStreak     = 0;
+let xpSession      = 0;
+let sessionTotal   = 0;
+let sessionCorrect = 0;
+let xpTotal        = 0;
+
+// ════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════
+const SCREENS = ['screen-login','screen-home','screen-quiz','screen-result'];
+
+function show(id) {
+  SCREENS.forEach(s => { const el = document.getElementById(s); if(el) el.style.display = 'none'; });
+  document.getElementById(id).style.display = 'block';
+}
+
+function goHome() {
+  if (!currentUser) { show('screen-login'); return; }
+  show('screen-home');
+  updateGlobalStats();
+}
+
+// ════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════
 function doLogin() {
   const u = document.getElementById('input-user').value.trim().toLowerCase();
   const p = document.getElementById('input-pass').value;
@@ -705,22 +1109,19 @@ function doLogin() {
 
   if (!found) {
     errEl.style.display = 'block';
-    errEl.textContent = 'Identifiant ou mot de passe incorrect.';
+    errEl.textContent = 'Identifiant ou mot de passe incorrect. ❌';
     document.getElementById('input-pass').value = '';
     return;
   }
-
   if (!found.actif) {
     errEl.style.display = 'block';
-    errEl.textContent = 'Accès désactivé. Contacte le Papounet !';
+    errEl.textContent = 'Accès désactivé. Contacte le Papounet ! 🚗';
     return;
   }
-
-  // Connexion réussie
   errEl.style.display = 'none';
   currentUser = found;
   document.getElementById('header-username').textContent = found.nom;
-  document.getElementById('header-user').style.display = 'block';
+  document.getElementById('header-user').style.display = 'flex';
   document.getElementById('header-subtitle').style.display = 'none';
   goHome();
 }
@@ -732,346 +1133,66 @@ function logout() {
   document.getElementById('input-user').value = '';
   document.getElementById('input-pass').value = '';
   document.getElementById('login-error').style.display = 'none';
-  sessionTotal = 0;
-  sessionCorrect = 0;
+  sessionTotal = sessionCorrect = xpTotal = xpSession = streak = bestStreak = 0;
   document.getElementById('global-stats').style.display = 'none';
   show('screen-login');
 }
 
-// ─────────────────────────────────────────────
-// BASE DE QUESTIONS
-// ─────────────────────────────────────────────
-const questions = [
-
-  // ──── SIGNALISATION ────
-  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau rond à bordure rouge avec un chiffre ?",
-    opts:["Une limitation de vitesse obligatoire","Une vitesse recommandée","La fin d'une limitation","Une zone de danger"],
-    ans:0, exp:"Un panneau rond à fond blanc, chiffre noir et bordure rouge est une limitation de vitesse obligatoire. On ne peut pas la dépasser." },
-
-  { cat:"Signalisation", type:"qcm", q:"Un panneau triangulaire à bordure rouge signale :",
-    opts:["Une interdiction","Un danger","Une obligation","Une information"],
-    ans:1, exp:"Les panneaux triangulaires à bordure rouge sont des panneaux de danger. Ils indiquent un risque sur la route." },
-
-  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau rond bleu avec une flèche blanche ?",
-    opts:["Une recommandation de direction","Une obligation de suivre cette direction","Une voie sans issue","Une autoroute proche"],
-    ans:1, exp:"Les panneaux ronds bleus sont des panneaux d'obligation. La flèche indique la direction obligatoire à suivre." },
-
-  { cat:"Signalisation", type:"tf", q:"Un feu orange fixe signifie que vous devez vous arrêter si vous le pouvez sans danger.",
-    ans:true, exp:"Le feu orange fixe impose de s'arrêter si c'est possible sans danger. Seul un feu orange clignotant permet de ralentir et de passer avec prudence." },
-
-  { cat:"Signalisation", type:"tf", q:"Un feu rouge clignotant signifie la même chose qu'un feu rouge fixe.",
-    ans:false, exp:"Un feu rouge clignotant se trouve aux passages à niveau et signifie qu'un train approche. Contrairement au feu rouge fixe, il n'y a pas de feu vert associé." },
-
-  { cat:"Signalisation", type:"qcm", q:"La ligne blanche continue au centre de la chaussée signifie :",
-    opts:["Le dépassement est interdit","Le dépassement est autorisé","La vitesse est limitée à 50 km/h","L'arrêt est interdit"],
-    ans:0, exp:"Une ligne blanche continue (axiale) interdit de la franchir ou de la chevaucher. Le dépassement est donc interdit." },
-
-  { cat:"Signalisation", type:"qcm", q:"Quelle couleur ont les panneaux d'autoroute ?",
-    opts:["Vert","Bleu","Orange","Blanc"],
-    ans:1, exp:"Les panneaux directionnels d'autoroute sont bleus. Les verts sont pour les voies express, les blancs pour les routes ordinaires." },
-
-  { cat:"Signalisation", type:"tf", q:"Un panneau de fin de limitation de vitesse (barré) permet de rouler à toute vitesse.",
-    ans:false, exp:"La fin de limitation indique que la restriction locale prend fin. On revient à la vitesse maximale autorisée pour ce type de route (ex. 80 km/h hors agglomération, pas illimitée)." },
-
-  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau 'STOP' ?",
-    opts:["Ralentir et passer si la voie est libre","S'arrêter complètement et céder le passage","S'arrêter uniquement si un véhicule arrive","Ralentir à 20 km/h"],
-    ans:1, exp:"Au panneau STOP, l'arrêt est obligatoire même en l'absence de tout autre véhicule. C'est une règle absolue." },
-
-  { cat:"Signalisation", type:"qcm", q:"Le panneau 'Cédez le passage' (triangle inversé) oblige à :",
-    opts:["S'arrêter complètement","Laisser passer les véhicules venant de droite uniquement","Laisser passer tous les véhicules sur la voie prioritaire","Klaxonner avant de passer"],
-    ans:2, exp:"Le panneau cédez le passage oblige à laisser passer tous les véhicules engagés sur la voie prioritaire, quelle que soit leur direction." },
-
-  // ──── PRIORITÉS ────
-  { cat:"Priorités", type:"qcm", q:"En l'absence de signalisation, à une intersection, vous devez :",
-    opts:["Passer en premier car vous allez tout droit","Céder le passage aux véhicules venant de votre droite","Klaxonner pour signaler votre présence","Passer en premier si vous arrivez avant l'autre"],
-    ans:1, exp:"La règle de priorité à droite s'applique : sans signalisation particulière, tout conducteur doit laisser passer les véhicules venant de sa droite." },
-
-  { cat:"Priorités", type:"tf", q:"Les véhicules circulant sur un rond-point sont toujours prioritaires sur ceux qui y entrent.",
-    ans:true, exp:"Depuis 1984, la règle en France est : les véhicules déjà engagés dans le giratoire sont prioritaires. Les entrants doivent céder le passage (sauf indication contraire)." },
-
-  { cat:"Priorités", type:"qcm", q:"Quelle est la priorité des véhicules d'urgence (gyrophare + sirène) ?",
-    opts:["Ils n'ont pas de priorité spéciale en ville","Ils sont prioritaires sur tous les autres usagers","Ils sont prioritaires uniquement sur autoroute","Ils sont prioritaires uniquement aux feux rouges"],
-    ans:1, exp:"Les véhicules prioritaires (police, pompiers, SAMU) avec gyrophare et sirène doivent être laissés passer immédiatement. Vous devez vous déporter et vous arrêter si nécessaire." },
-
-  { cat:"Priorités", type:"tf", q:"Sur une voie avec 'priorité à droite', un cycliste venant de votre droite est prioritaire sur vous.",
-    ans:true, exp:"La règle de priorité à droite s'applique à tous les usagers de la route, y compris les cyclistes et les conducteurs de deux-roues." },
-
-  { cat:"Priorités", type:"qcm", q:"En agglomération, qui est prioritaire sur le reste de la circulation ?",
-    opts:["Les taxis","Les tramways","Les piétons sur passage protégé","Les bus en sortie d'arrêt uniquement"],
-    ans:2, exp:"Les piétons engagés sur un passage protégé (zèbre) sont prioritaires sur tous les véhicules. Le conducteur doit s'arrêter et les laisser traverser." },
-
-  // ──── VITESSES ────
-  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale autorisée sur autoroute par temps sec ?",
-    opts:["110 km/h","120 km/h","130 km/h","150 km/h"],
-    ans:2, exp:"Sur autoroute par temps sec, la vitesse maximale est de 130 km/h. Elle passe à 110 km/h par temps de pluie et 50 km/h en cas de brouillard (visibilité < 50 m)." },
-
-  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale en agglomération (sauf indication contraire) ?",
-    opts:["30 km/h","50 km/h","70 km/h","80 km/h"],
-    ans:1, exp:"En agglomération (entre les panneaux d'entrée et de sortie de ville), la vitesse est limitée à 50 km/h sauf panneau contraire." },
-
-  { cat:"Vitesses", type:"qcm", q:"Sur une route à double sens sans séparateur central, hors agglomération, la vitesse maximale est :",
-    opts:["80 km/h","90 km/h","100 km/h","110 km/h"],
-    ans:0, exp:"Depuis juillet 2018, la vitesse maximale sur route bidirectionnelle hors agglomération est de 80 km/h (abaissée de 90 km/h)." },
-
-  { cat:"Vitesses", type:"tf", q:"Par temps de pluie sur autoroute, la vitesse maximale est de 110 km/h.",
-    ans:true, exp:"Par temps de pluie ou visibilité réduite sur autoroute, la vitesse maximale passe de 130 à 110 km/h." },
-
-  { cat:"Vitesses", type:"qcm", q:"La vitesse maximale pour un conducteur en période probatoire (permis récent) sur autoroute est :",
-    opts:["110 km/h","120 km/h","130 km/h","Identique aux autres conducteurs"],
-    ans:0, exp:"Le conducteur novice (dans les 3 ans suivant l'obtention du permis) est limité à 110 km/h sur autoroute, 100 km/h sur route et 80 km/h sur voie express." },
-
-  { cat:"Vitesses", type:"tf", q:"En cas de brouillard dense (visibilité inférieure à 50 m), la vitesse est limitée à 50 km/h sur toutes les routes.",
-    ans:true, exp:"Quand la visibilité est inférieure à 50 mètres, la vitesse maximale est de 50 km/h sur tous types de route, autoroute comprise." },
-
-  // ──── ALCOOL & STUPÉFIANTS ────
-  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Le taux d'alcoolémie maximal autorisé pour un conducteur expérimenté en France est :",
-    opts:["0,2 g/L de sang","0,5 g/L de sang","0,8 g/L de sang","1,0 g/L de sang"],
-    ans:1, exp:"Le taux légal est de 0,5 g/L de sang (ou 0,25 mg/L d'air expiré). Au-delà, c'est une infraction. À partir de 0,8 g/L, c'est un délit." },
-
-  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Pour un conducteur en période probatoire, le taux d'alcoolémie maximal est :",
-    opts:["0,0 g/L","0,2 g/L","0,5 g/L","Identique aux autres"],
-    ans:1, exp:"Pour les conducteurs novices (et les conducteurs de transport en commun), le taux maximal autorisé est de 0,2 g/L de sang, soit quasiment zéro." },
-
-  { cat:"Alcool & Stupéfiants", type:"tf", q:"Conduire après avoir consommé du cannabis est légal si l'on ne se sent pas drogué.",
-    ans:false, exp:"Conduire après consommation de stupéfiants est interdit, peu importe la sensation ressentie. Le dépistage salivaire peut détecter le THC plusieurs jours après consommation." },
-
-  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Un taux d'alcoolémie de 0,8 g/L ou plus est :",
-    opts:["Une simple contravention","Un délit pénal","Légal en dehors des agglomérations","Légal si le conducteur n'a pas d'accident"],
-    ans:1, exp:"À partir de 0,8 g/L de sang, c'est un délit. Les sanctions comprennent des amendes, la suspension du permis et une possible peine d'emprisonnement." },
-
-  // ──── DISTANCES & FREINAGE ────
-  { cat:"Distances & Freinage", type:"qcm", q:"La distance de sécurité entre deux véhicules sur route est d'au moins :",
-    opts:["1 seconde","2 secondes","3 secondes","5 secondes"],
-    ans:1, exp:"La règle des 2 secondes : il faut au minimum 2 secondes d'intervalle entre votre véhicule et celui qui vous précède. Sur autoroute, on recommande 3 secondes." },
-
-  { cat:"Distances & Freinage", type:"tf", q:"Sur sol mouillé, la distance de freinage est à peu près le double de celle sur sol sec.",
-    ans:true, exp:"L'adhérence est réduite sur chaussée mouillée. La distance de freinage peut doubler voire tripler selon la vitesse et le type de pneumatique." },
-
-  { cat:"Distances & Freinage", type:"qcm", q:"Le temps de réaction moyen d'un conducteur non drogué et non fatigué est d'environ :",
-    opts:["0,5 seconde","1 seconde","2 secondes","3 secondes"],
-    ans:1, exp:"Le temps de réaction moyen est d'environ 1 seconde. À 90 km/h, cela représente 25 mètres parcourus avant même de commencer à freiner." },
-
-  { cat:"Distances & Freinage", type:"qcm", q:"À 50 km/h sur sol sec, quelle est la distance d'arrêt totale approximative ?",
-    opts:["15 mètres","25 mètres","35 mètres","50 mètres"],
-    ans:2, exp:"À 50 km/h : distance de réaction (~14 m) + distance de freinage (~14-20 m) = environ 28-35 mètres. On retient généralement 35 m en conditions normales." },
-
-  // ──── DÉPASSEMENT ────
-  { cat:"Dépassement", type:"qcm", q:"Le dépassement est interdit :",
-    opts:["Au sommet d'une côte","En agglomération uniquement","Sur autoroute","Sur ligne blanche discontinue"],
-    ans:0, exp:"Le dépassement est interdit au sommet d'une côte, dans les virages, aux passages à niveau, aux intersections (sauf exceptions) et partout où la visibilité est insuffisante." },
-
-  { cat:"Dépassement", type:"tf", q:"On peut dépasser par la droite un véhicule dont le conducteur a signalé qu'il tournait à gauche.",
-    ans:true, exp:"Exception à la règle du dépassement par la gauche : si un véhicule s'apprête à tourner à gauche et l'a signalé, on peut le dépasser par la droite." },
-
-  { cat:"Dépassement", type:"qcm", q:"Lors d'un dépassement, vous devez :",
-    opts:["Vous rabattre dès que le capot du véhicule dépassé est visible dans votre rétroviseur","Vous rabattre quand vous voyez le véhicule dépassé entier dans votre rétroviseur intérieur","Klaxonner puis vous rabattre","Vous rabattre immédiatement après avoir dépassé"],
-    ans:1, exp:"On ne se rabat qu'après avoir vu le véhicule dépassé entier dans le rétroviseur intérieur, afin d'avoir une marge de sécurité suffisante." },
-
-  // ──── CEINTURE & SÉCURITÉ ────
-  { cat:"Ceinture & Sécurité", type:"tf", q:"La ceinture de sécurité est obligatoire pour le conducteur et tous les passagers.",
-    ans:true, exp:"Le port de la ceinture est obligatoire pour tous les occupants d'un véhicule, à l'avant comme à l'arrière. Le conducteur est responsable des passagers de moins de 18 ans." },
-
-  { cat:"Ceinture & Sécurité", type:"qcm", q:"Un enfant de 5 ans doit être installé :",
-    opts:["Sur le siège avant avec ceinture","Dans un siège homologué adapté à son poids, de préférence à l'arrière","Sans siège si la ceinture passe correctement","À l'avant uniquement si l'airbag est désactivé"],
-    ans:1, exp:"Tout enfant de moins de 10 ans doit utiliser un siège homologué (groupe) adapté à son poids. L'arrière du véhicule est recommandé." },
-
-  { cat:"Ceinture & Sécurité", type:"tf", q:"Le téléphone portable tenu en main est interdit mais on peut l'utiliser sur haut-parleur posé sur le tableau de bord.",
-    ans:false, exp:"L'usage du téléphone tenu en main est interdit. Mais tenir un téléphone à la main, même sur haut-parleur, est aussi interdit. Seul le kit mains-libres intégré est autorisé (pas le téléphone posé)." },
-
-  { cat:"Ceinture & Sécurité", type:"qcm", q:"Le port du casque est obligatoire pour :",
-    opts:["Les motocyclistes uniquement","Les motocyclistes et les cyclomotoristes","Tous les deux-roues y compris les vélos","Les deux-roues motorisés uniquement"],
-    ans:3, exp:"Le casque est obligatoire pour tous les conducteurs et passagers de deux-roues motorisés (motos, scooters, cyclomoteurs). Les cyclistes ne sont pas concernés par la loi (sauf enfants en sièges)." },
-
-  // ──── STATIONNEMENT & ARRÊT ────
-  { cat:"Stationnement", type:"qcm", q:"Le stationnement est interdit :",
-    opts:["À moins de 5 m d'un carrefour","À moins de 10 m d'un carrefour","À moins de 15 m d'un carrefour","À moins de 3 m d'un carrefour"],
-    ans:0, exp:"L'arrêt et le stationnement sont interdits à moins de 5 mètres en amont d'une intersection ou d'un carrefour." },
-
-  { cat:"Stationnement", type:"tf", q:"On peut s'arrêter brièvement sur une ligne jaune continue longeant le trottoir.",
-    ans:false, exp:"Une ligne jaune continue au sol interdit tout arrêt et tout stationnement, même momentané." },
-
-  { cat:"Stationnement", type:"qcm", q:"Quelle est la différence entre un arrêt et un stationnement ?",
-    opts:["Il n'y a aucune différence","L'arrêt est inférieur à 3 minutes, le stationnement au-delà","L'arrêt implique que le conducteur reste au volant, le stationnement qu'il s'éloigne","L'arrêt est autorisé partout, pas le stationnement"],
-    ans:2, exp:"L'arrêt : le conducteur reste dans ou près du véhicule et peut repartir immédiatement. Le stationnement : le conducteur quitte son véhicule ou l'immobilise plus longuement." },
-
-  // ──── ÉCLAIRAGE ────
-  { cat:"Éclairage", type:"qcm", q:"Quand doit-on allumer ses feux de route (pleins phares) ?",
-    opts:["Toujours la nuit","La nuit hors agglomération, quand la route est peu éclairée et qu'aucun véhicule n'est en face","Uniquement sur autoroute","Uniquement par brouillard"],
-    ans:1, exp:"Les feux de route (pleins phares) s'utilisent la nuit hors agglomération, sur route peu éclairée, et uniquement quand aucun véhicule venant en sens inverse n'est visible." },
-
-  { cat:"Éclairage", type:"tf", q:"Les feux de jour (DRL) remplacent les feux de croisement la nuit.",
-    ans:false, exp:"Les feux de jour (DRL) sont uniquement destinés à la visibilité de jour. La nuit, par temps de pluie ou brouillard, les feux de croisement (ou de route) sont obligatoires." },
-
-  { cat:"Éclairage", type:"qcm", q:"Les feux antibrouillard arrière doivent être utilisés :",
-    opts:["Dès qu'il pleut","Uniquement quand la visibilité est inférieure à 50 mètres","Toujours la nuit","Uniquement sur autoroute"],
-    ans:1, exp:"Les feux antibrouillard arrière (rouge vif) ne s'utilisent qu'en cas de brouillard, de neige ou de forte pluie réduisant la visibilité à moins de 50 mètres." },
-
-  // ──── AUTOROUTE ────
-  { cat:"Autoroute", type:"qcm", q:"Sur autoroute, la bande d'arrêt d'urgence (BAU) est réservée à :",
-    opts:["Rouler lentement en cas de bouchon","Dépasser les véhicules lents","S'arrêter uniquement en cas d'urgence ou de panne","Circuler à moins de 30 km/h"],
-    ans:2, exp:"La bande d'arrêt d'urgence ne doit être utilisée qu'en cas d'arrêt forcé (panne, urgence médicale). L'utiliser pour rouler est une infraction grave." },
-
-  { cat:"Autoroute", type:"tf", q:"Il est interdit de faire demi-tour sur autoroute.",
-    ans:true, exp:"Le demi-tour et la marche arrière sont strictement interdits sur autoroute. En cas d'erreur, il faut rejoindre la sortie suivante." },
-
-  { cat:"Autoroute", type:"qcm", q:"Sur autoroute à 3 voies, quelle voie est réservée à la circulation normale ?",
-    opts:["La voie du milieu","La voie de gauche","La voie de droite","Toutes les voies sont équivalentes"],
-    ans:2, exp:"La voie de droite est la voie normale de circulation. Les voies du milieu et de gauche sont des voies de dépassement. On doit y revenir dès que possible." },
-
-  // ──── ENVIRONNEMENT & AUTRES ────
-  { cat:"Environnement", type:"tf", q:"En cas d'accident avec blessés, le premier réflexe est de déplacer les blessés.",
-    ans:false, exp:"Il ne faut JAMAIS déplacer un blessé sauf danger immédiat (incendie, noyade). Le déplacer risque d'aggraver les lésions notamment vertébrales. Il faut baliser, appeler et sécuriser." },
-
-  { cat:"Environnement", type:"qcm", q:"Quel numéro appeler en cas d'accident avec blessés ?",
-    opts:["15 (SAMU)","17 (Police)","18 (Pompiers)","15, 17 ou 18 selon la situation — ou le 112"],
-    ans:3, exp:"Le 112 est le numéro d'urgence européen, utilisable partout. Le 15 (SAMU), 17 (Police) et 18 (Pompiers) sont aussi valides. En pratique, le 112 redirige vers le bon service." },
-
-  { cat:"Environnement", type:"qcm", q:"Le triangle de présignalisation doit être placé à quelle distance du véhicule en panne ?",
-    opts:["À 10 mètres","À 30 mètres","À 50 mètres","À 100 mètres"],
-    ans:2, exp:"Le triangle de présignalisation doit être posé à 30 mètres minimum en amont du véhicule (50 mètres sur autoroute) pour avertir les conducteurs qui arrivent." },
-
-  { cat:"Environnement", type:"tf", q:"Le gilet de sécurité (gilet jaune) doit être porté avant de sortir du véhicule en panne sur la chaussée.",
-    ans:true, exp:"En cas d'immobilisation sur la chaussée ou les abords, le conducteur et les passagers doivent enfiler le gilet de haute visibilité AVANT de sortir du véhicule." },
-
-  { cat:"Environnement", type:"qcm", q:"Le contrôle technique est obligatoire pour les voitures de tourisme tous les :",
-    opts:["Ans","2 ans","3 ans","4 ans"],
-    ans:1, exp:"Le contrôle technique est obligatoire tous les 2 ans pour les véhicules de tourisme de plus de 4 ans. La première visite a lieu à 4 ans." },
-
-  { cat:"Environnement", type:"tf", q:"Jeter un mégot par la vitre est une infraction au code de la route.",
-    ans:true, exp:"Jeter un objet depuis un véhicule est une contravention de 4e classe (amende jusqu'à 750 €). Un mégot peut aussi provoquer des incendies de forêt." },
-
-  // ──── VOIES DE CIRCULATION ────
-  { cat:"Voies", type:"qcm", q:"Que signifie un marquage en damier (cases blanches et jaunes) au sol ?",
-    opts:["Zone de dépassement interdit","Îlot à ne pas franchir","Zone piétonne","Arrêt de bus"],
-    ans:1, exp:"Un marquage en damier (hachuré) au sol délimite un îlot ou une zone à ne pas franchir ni stationner." },
-
-  { cat:"Voies", type:"tf", q:"Sur une route à deux voies dans le même sens, on peut rouler indifféremment sur l'une ou l'autre.",
-    ans:false, exp:"Il faut circuler sur la voie de droite. La voie de gauche est réservée au dépassement et au changement de direction. On doit regagner la droite dès que possible." },
-
-  { cat:"Voies", type:"qcm", q:"Un couloir de bus (voie réservée aux bus) est :",
-    opts:["Interdit à tous sauf aux bus","Autorisé aux taxis et vélos également","Interdit aux vélos","Autorisé aux véhicules d'urgence uniquement"],
-    ans:1, exp:"Les couloirs de bus sont généralement autorisés aux bus, taxis et vélos. Certains couloirs autorisent aussi les voitures en covoiturage. Vérifiez le panneau de signalisation associé." },
-
-  { cat:"Voies", type:"tf", q:"Il est permis de s'engager dans un carrefour si on risque d'y être bloqué.",
-    ans:false, exp:"Il est interdit de s'engager dans un carrefour si cela risque d'y bloquer la circulation, même si le feu est vert. On attend que la voie soit libre." },
-
-  // ──── CHARGE & REMORQUAGE ────
-  { cat:"Charge & Remorque", type:"qcm", q:"Lorsqu'un véhicule tracte une remorque lourde (PTAC > 750 kg), la vitesse maximale sur autoroute est :",
-    opts:["130 km/h","110 km/h","100 km/h","90 km/h"],
-    ans:1, exp:"Avec une remorque de plus de 750 kg, la vitesse est limitée à 110 km/h sur autoroute, 100 km/h sur route express et 80 km/h sur les autres routes." },
-
-  { cat:"Charge & Remorque", type:"tf", q:"Un chargement qui dépasse de plus d'un mètre à l'arrière doit être signalé par un dispositif réfléchissant.",
-    ans:true, exp:"Tout dépassement de chargement à l'arrière de plus d'un mètre doit être signalé par un dispositif réfléchissant (banderole rouge de jour, lanterne rouge la nuit)." },
-
-  // ──── COMPORTEMENT ────
-  { cat:"Comportement", type:"qcm", q:"La fatigue au volant :",
-    opts:["N'est dangereuse qu'après 10 heures de conduite","Peut provoquer des endormissements dès la 2e heure","Ne concerne que les conducteurs de nuit","Est compensée par la caféine"],
-    ans:1, exp:"Les effets de la fatigue peuvent apparaître dès 2 heures de conduite continue. La fatigue au volant est responsable d'environ 1/3 des accidents mortels sur autoroute." },
-
-  { cat:"Comportement", type:"tf", q:"Manger ou boire au volant est une infraction.",
-    ans:false, exp:"Manger ou boire au volant n'est pas directement une infraction au code de la route, mais si cela entraîne une perte de contrôle ou une inattention, le conducteur peut être sanctionné pour conduite inattentive." },
-
-  { cat:"Comportement", type:"qcm", q:"Que faire si vos roues avant perdent l'adhérence (aquaplanage) ?",
-    opts:["Freiner brusquement","Accélérer pour sortir de la zone","Relâcher l'accélérateur progressivement sans braquer","Braquer fortement"],
-    ans:2, exp:"En cas d'aquaplanage, il faut relâcher l'accélérateur progressivement, tenir fermement le volant sans braquer, et attendre que les roues retrouvent l'adhérence." },
-
-  { cat:"Comportement", type:"tf", q:"L'usage du klaxon est autorisé en agglomération uniquement en cas de danger immédiat.",
-    ans:true, exp:"En agglomération, le klaxon (avertisseur sonore) ne peut être utilisé qu'en cas de danger immédiat. L'utiliser pour exprimer son mécontentement est une infraction." },
-
-  // ──── PERMIS & INFRACTIONS ────
-  { cat:"Permis & Infractions", type:"qcm", q:"Le permis probatoire (nouveau conducteur) commence avec combien de points ?",
-    opts:["6 points","8 points","10 points","12 points"],
-    ans:1, exp:"Le permis probatoire démarre à 6 points, augmente de 2 points par an sans infraction, et atteint 12 points après 3 ans (2 ans avec conduite accompagnée)." },
-
-  { cat:"Permis & Infractions", type:"qcm", q:"Combien de points coûte un excès de vitesse entre 20 et 30 km/h au-dessus de la limite ?",
-    opts:["1 point","2 points","3 points","4 points"],
-    ans:2, exp:"Un excès de vitesse compris entre 20 et moins de 30 km/h au-dessus de la limite entraîne le retrait de 3 points et une amende." },
-
-  { cat:"Permis & Infractions", type:"tf", q:"On peut conduire avec un permis suspendu si c'est pour une urgence médicale.",
-    ans:false, exp:"Conduire avec un permis suspendu est un délit pénal, quelle que soit la raison invoquée. En cas d'urgence, appelez le 15 ou le 112." },
-
-  { cat:"Permis & Infractions", type:"qcm", q:"Le refus d'obtempérer (ignorer les injonctions des forces de l'ordre) :",
-    opts:["Est une contravention mineure","Est un délit pouvant entraîner une annulation du permis","Est légal si le conducteur n'avait pas vu le policier","N'existe pas dans le code de la route"],
-    ans:1, exp:"Le refus d'obtempérer est un délit grave pouvant entraîner une annulation de permis, une garde à vue et des poursuites pénales." },
-];
-
-// ─────────────────────────────────────────────
-// ÉTAT DE L'APPLICATION
-// ─────────────────────────────────────────────
-let selectedMode = 'mix';
-let quizQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let answered = false;
-
-let sessionTotal = 0;
-let sessionCorrect = 0;
-
-// ─────────────────────────────────────────────
-// NAVIGATION
-// ─────────────────────────────────────────────
-function goHome() {
-  if (!currentUser) { show('screen-login'); return; }
-  show('screen-home');
-  document.getElementById('global-stats').style.display = sessionTotal > 0 ? 'flex' : 'none';
-}
-
-// ─────────────────────────────────────────────
+// ════════════════════════════════════════════
 // SÉLECTION MODE
-// ─────────────────────────────────────────────
-function selectMode(btn) {
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedMode = btn.dataset.mode;
+// ════════════════════════════════════════════
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMode = el.dataset.mode;
 }
 
-// ─────────────────────────────────────────────
-// DÉMARRAGE
-// ─────────────────────────────────────────────
+// ════════════════════════════════════════════
+// QUIZ
+// ════════════════════════════════════════════
 function startQuiz() {
   let pool = [...questions];
-
   if (selectedMode === 'qcm') pool = pool.filter(q => q.type === 'qcm');
-  if (selectedMode === 'tf') pool = pool.filter(q => q.type === 'tf');
-
-  // Mélanger
+  if (selectedMode === 'tf')  pool = pool.filter(q => q.type === 'tf');
   pool = pool.sort(() => Math.random() - 0.5);
-
   const count = selectedMode === 'exam' ? 40 : 20;
   quizQuestions = pool.slice(0, Math.min(count, pool.length));
 
-  currentIndex = 0;
-  score = 0;
-
+  currentIndex = score = xpSession = streak = 0;
+  answered = false;
   show('screen-quiz');
   renderQuestion();
 }
 
-// ─────────────────────────────────────────────
-// AFFICHAGE QUESTION
-// ─────────────────────────────────────────────
 function renderQuestion() {
   answered = false;
   const q = quizQuestions[currentIndex];
   const total = quizQuestions.length;
 
   // Progression
-  const pct = (currentIndex / total) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-fill').style.width = (currentIndex / total * 100) + '%';
   document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${total}`;
+  document.getElementById('hud-streak').textContent = `🔥 ${streak}`;
+  document.getElementById('hud-xp').textContent = `⭐ ${xpSession} XP`;
 
-  // Catégorie & type
+  // Image
+  const imgEl = document.getElementById('q-img');
+  const imgSrc = CAT_IMAGES[q.cat] || CAT_IMAGES["Signalisation"];
+  imgEl.src = imgSrc;
+  imgEl.alt = q.cat;
+
+  // Badges
   document.getElementById('q-category').textContent = q.cat;
-  document.getElementById('q-type').textContent = q.type === 'tf' ? '✅ Vrai ou Faux ?' : '📝 Question à choix multiple';
+  document.getElementById('q-type-badge').textContent = q.type === 'tf' ? '✅ Vrai / Faux' : '📝 QCM';
+
+  // Texte
   document.getElementById('q-text').textContent = q.q;
 
-  // Réinitialiser feedback
+  // Reset feedback
   const fb = document.getElementById('feedback');
   fb.style.display = 'none';
   fb.className = 'feedback-box';
-
-  const nextBtn = document.getElementById('btn-next');
-  nextBtn.style.display = 'none';
+  document.getElementById('btn-next').style.display = 'none';
 
   // Réponses
   const container = document.getElementById('q-answers');
@@ -1080,8 +1201,12 @@ function renderQuestion() {
   if (q.type === 'tf') {
     container.innerHTML = `
       <div class="tf-buttons">
-        <button class="tf-btn vrai" onclick="answerTF(true)">✔ Vrai</button>
-        <button class="tf-btn faux" onclick="answerTF(false)">✖ Faux</button>
+        <button class="tf-btn vrai" onclick="answerTF(true)">
+          <span class="tf-icon">✅</span>Vrai
+        </button>
+        <button class="tf-btn faux" onclick="answerTF(false)">
+          <span class="tf-icon">❌</span>Faux
+        </button>
       </div>`;
   } else {
     const letters = ['A','B','C','D'];
@@ -1092,30 +1217,22 @@ function renderQuestion() {
       btn.onclick = () => answerQCM(i, btn, q);
       container.appendChild(btn);
     });
+    container.className = 'answers';
   }
 }
 
-// ─────────────────────────────────────────────
-// RÉPONSES
-// ─────────────────────────────────────────────
 function answerQCM(idx, clickedBtn, q) {
   if (answered) return;
   answered = true;
-
-  const allBtns = document.querySelectorAll('.answer-btn');
-  allBtns.forEach(b => b.disabled = true);
-
+  document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
   const correct = idx === q.ans;
   if (correct) {
     clickedBtn.classList.add('correct');
-    score++;
-    sessionCorrect++;
   } else {
     clickedBtn.classList.add('wrong');
-    allBtns[q.ans].classList.add('reveal-correct');
+    document.querySelectorAll('.answer-btn')[q.ans].classList.add('reveal-correct');
   }
-  sessionTotal++;
-  showFeedback(correct, q.exp);
+  processAnswer(correct, q.exp);
 }
 
 function answerTF(userAns) {
@@ -1123,109 +1240,148 @@ function answerTF(userAns) {
   answered = true;
   const q = quizQuestions[currentIndex];
   const correct = userAns === q.ans;
-
+  document.querySelectorAll('.tf-btn').forEach(b => b.disabled = true);
   const btns = document.querySelectorAll('.tf-btn');
-  btns.forEach(b => b.disabled = true);
+  if (correct) {
+    (userAns ? btns[0] : btns[1]).classList.add('correct');
+  } else {
+    (userAns ? btns[0] : btns[1]).classList.add('wrong');
+    (q.ans   ? btns[0] : btns[1]).classList.add('correct');
+  }
+  processAnswer(correct, q.exp);
+}
+
+function processAnswer(correct, explication) {
+  const isLast = currentIndex === quizQuestions.length - 1;
+  sessionTotal++;
 
   if (correct) {
     score++;
     sessionCorrect++;
-    const target = userAns ? btns[0] : btns[1];
-    target.classList.add('correct');
+    streak++;
+    bestStreak = Math.max(bestStreak, streak);
+    const xpGain = 10 + (streak > 2 ? 5 * Math.min(streak - 2, 5) : 0);
+    xpSession += xpGain;
+    xpTotal   += xpGain;
+    launchConfetti();
+    if (streak >= 3) showStreakPopup();
   } else {
-    const wrongTarget = userAns ? btns[0] : btns[1];
-    wrongTarget.classList.add('wrong');
-    const rightTarget = q.ans ? btns[0] : btns[1];
-    rightTarget.classList.add('correct');
+    streak = 0;
   }
-  sessionTotal++;
-  showFeedback(correct, q.exp);
-}
 
-function showFeedback(correct, explication) {
+  document.getElementById('hud-streak').textContent = `🔥 ${streak}`;
+  document.getElementById('hud-xp').textContent = `⭐ ${xpSession} XP`;
+
   const fb = document.getElementById('feedback');
-  const title = document.getElementById('feedback-title');
-  const text = document.getElementById('feedback-text');
-  const nextBtn = document.getElementById('btn-next');
-  const isLast = currentIndex === quizQuestions.length - 1;
-
   fb.className = 'feedback-box ' + (correct ? 'correct' : 'wrong');
-  title.textContent = correct ? '✔ Bonne réponse !' : '✖ Mauvaise réponse';
-  text.textContent = explication;
+  document.getElementById('feedback-title').textContent = correct
+    ? '✔ Bonne réponse !'
+    : '✖ Mauvaise réponse';
+  document.getElementById('feedback-text').textContent = explication;
   fb.style.display = 'block';
 
-  nextBtn.textContent = isLast ? 'Voir mes résultats 🏁' : 'Question suivante →';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = isLast ? '🏁 Voir mes résultats' : 'Question suivante →';
   nextBtn.style.display = 'block';
 
   updateGlobalStats();
 }
 
-// ─────────────────────────────────────────────
-// NAVIGATION QUESTIONS
-// ─────────────────────────────────────────────
 function nextQuestion() {
   currentIndex++;
-  if (currentIndex >= quizQuestions.length) {
-    showResult();
-  } else {
-    renderQuestion();
-  }
+  if (currentIndex >= quizQuestions.length) showResult();
+  else renderQuestion();
 }
 
-// ─────────────────────────────────────────────
+// ════════════════════════════════════════════
 // RÉSULTATS
-// ─────────────────────────────────────────────
+// ════════════════════════════════════════════
 function showResult() {
   show('screen-result');
-  const total = quizQuestions.length;
-  const pct = Math.round((score / total) * 100);
+  const total  = quizQuestions.length;
   const erreurs = total - score;
-
-  // Seuil examen : 5 fautes max sur 40 questions
-  const pass = selectedMode === 'exam' ? erreurs <= 5 : pct >= 75;
+  const pct    = Math.round(score / total * 100);
+  const pass   = selectedMode === 'exam' ? erreurs <= 5 : pct >= 75;
 
   document.getElementById('result-emoji').textContent = pass ? '🎉' : '💪';
   document.getElementById('result-title').textContent = pass ? 'Bravo !' : 'Encore un effort !';
   document.getElementById('result-score').textContent = `${score}/${total}`;
-  document.getElementById('result-score').className = 'result-score ' + (pass ? 'pass' : 'fail');
+  document.getElementById('result-denom').textContent = 'questions';
+  document.getElementById('result-ring').className = 'result-score-ring ' + (pass ? 'pass' : 'fail');
   document.getElementById('res-correct').textContent = score;
-  document.getElementById('res-wrong').textContent = erreurs;
+  document.getElementById('res-wrong').textContent   = erreurs;
+  document.getElementById('res-xp').textContent      = xpSession;
 
   let detail = '';
   if (selectedMode === 'exam') {
     detail = pass
-      ? `${erreurs} faute${erreurs > 1 ? 's' : ''} — tu passes l'examen ! (Maximum autorisé : 5 fautes)`
-      : `${erreurs} fautes — il faut moins de 6 fautes pour réussir l'examen réel. Continue à t'entraîner !`;
+      ? `${erreurs} faute${erreurs>1?'s':''} — tu réussirais l'examen ! (max 5 fautes autorisées)`
+      : `${erreurs} fautes — il faut moins de 6 fautes pour réussir l'examen réel. Continue !`;
   } else {
     detail = pass
-      ? `${pct}% de bonnes réponses — excellent travail !`
-      : `${pct}% de bonnes réponses. L'objectif est 75% minimum. Rejoue pour progresser !`;
+      ? `${pct}% de bonnes réponses — excellent travail ! 🌟`
+      : `${pct}% de bonnes réponses. Objectif : 75%. Tu vas y arriver !`;
   }
+  if (bestStreak >= 3) detail += `\n🔥 Meilleure série : ${bestStreak} bonnes réponses d'affilée !`;
   document.getElementById('result-detail').textContent = detail;
+
+  if (pass) setTimeout(launchConfetti, 200);
 }
 
+// ════════════════════════════════════════════
+// STATS HEADER
+// ════════════════════════════════════════════
 function updateGlobalStats() {
   if (sessionTotal > 0) {
     document.getElementById('global-stats').style.display = 'flex';
-    document.getElementById('stat-session').textContent = `${sessionCorrect}/${sessionTotal}`;
-    document.getElementById('stat-total').textContent = Math.round((sessionCorrect / sessionTotal) * 100) + '%';
+    document.getElementById('stat-session').textContent    = `${sessionCorrect}/${sessionTotal}`;
+    document.getElementById('stat-xp-total').textContent   = xpTotal;
+    document.getElementById('stat-best-streak').textContent = bestStreak;
   }
 }
 
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
-// Ajouter l'écran login dans la liste des écrans gérés
-const allScreens = ['screen-login','screen-home','screen-quiz','screen-result'];
-
-function show(screenId) {
-  allScreens.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-  document.getElementById(screenId).style.display = 'block';
+// ════════════════════════════════════════════
+// CONFETTIS
+// ════════════════════════════════════════════
+function launchConfetti() {
+  const container = document.getElementById('confetti-container');
+  const colors = ['#fbbf24','#ef4444','#22c55e','#3b82f6','#8b5cf6','#ec4899','#f97316'];
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width  = (Math.random() * 8 + 6) + 'px';
+    piece.style.height = (Math.random() * 8 + 6) + 'px';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.animationDuration = (Math.random() * 0.8 + 0.8) + 's';
+    piece.style.animationDelay    = (Math.random() * 0.4) + 's';
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), 2000);
+  }
 }
 
+// ════════════════════════════════════════════
+// POPUP SÉRIE
+// ════════════════════════════════════════════
+function showStreakPopup() {
+  const popup = document.getElementById('streak-popup');
+  const msgs = {
+    3: '🔥 Série de 3 !',
+    5: '🔥🔥 5 d\'affilée !',
+    7: '⚡ 7 bonnes réponses !',
+    10:'🏆 10 en série ! Incroyable !'
+  };
+  const msg = msgs[streak] || (streak % 5 === 0 ? `🔥 ${streak} en série !` : null);
+  if (!msg) return;
+  popup.textContent = msg;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 2000);
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
 show('screen-login');
 </script>
 </body>
