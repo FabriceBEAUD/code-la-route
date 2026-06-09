@@ -1193,6 +1193,187 @@ const questions = [
 
   { cat:"Charge & Remorque", type:"tf", q:"Un chargement qui dépasse de plus d'un mètre à l'arrière doit être signalé par un dispositif réfléchissant.",
     ans:true, exp:"Tout dépassement de chargement à l'arrière de plus d'un mètre doit être signalé." },
+
+  // ── NOUVELLES QUESTIONS — SIGNALISATION ──
+  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau rectangulaire bleu avec un 'P' blanc ?",
+    opts:["Parking payant uniquement","Stationnement autorisé","Interdiction de stationner","Zone de livraison"],
+    ans:1, exp:"Un panneau rectangulaire bleu avec un 'P' blanc indique qu'un stationnement est autorisé dans ce secteur." },
+
+  { cat:"Signalisation", type:"qcm", q:"Un panneau 'sens interdit' (cercle rouge avec bande blanche horizontale) interdit :",
+    opts:["De tourner à gauche","D'entrer dans la voie dans le sens indiqué","De faire demi-tour","De dépasser"],
+    ans:1, exp:"Le panneau sens interdit signifie qu'on ne peut pas s'engager dans cette voie dans le sens face au panneau." },
+
+  { cat:"Signalisation", type:"tf", q:"Un marquage jaune en zigzag sur le trottoir interdit tout arrêt.",
+    ans:true, exp:"Un marquage jaune en zigzag (souvent devant les écoles) interdit tout arrêt et tout stationnement." },
+
+  { cat:"Signalisation", type:"qcm", q:"Le panneau 'zone 30' impose :",
+    opts:["Une limitation à 30 km/h sur certaines voies","Une limitation à 30 km/h sur toutes les voies de la zone","Un stationnement limité à 30 minutes","Une priorité à droite annulée"],
+    ans:1, exp:"Dans une zone 30, toutes les voies sont limitées à 30 km/h. La priorité à droite s'applique sauf indication contraire." },
+
+  { cat:"Signalisation", type:"tf", q:"Les feux tricolores ont toujours la même signification, quel que soit leur emplacement.",
+    ans:false, exp:"Les feux pour les trams, les vélos ou les piétons peuvent avoir des significations différentes. Un feu 'lune' pour les transports en commun n'a pas la même signification qu'un feu classique." },
+
+  { cat:"Signalisation", type:"qcm", q:"Que signifie une flèche verte clignotante en bas à droite d'un feu rouge ?",
+    opts:["Vous pouvez passer à toute vitesse","Vous pouvez tourner dans la direction indiquée avec prudence","Le feu est en panne","Vous avez la priorité absolue"],
+    ans:1, exp:"La flèche verte clignotante permet de tourner dans la direction indiquée malgré le feu rouge, mais SANS priorité — vous devez céder le passage." },
+
+  // ── NOUVELLES QUESTIONS — PRIORITÉS ──
+  { cat:"Priorités", type:"qcm", q:"À une intersection sans signalisation, vous venez d'une voie sans issue. Qui est prioritaire ?",
+    opts:["Vous, car vous êtes pressé","Le véhicule venant de votre droite","Vous, car votre voie est plus large","Le véhicule arrivant le premier"],
+    ans:1, exp:"Peu importe le type de voie, la règle de priorité à droite s'applique : le véhicule venant de votre droite est toujours prioritaire en l'absence de signalisation." },
+
+  { cat:"Priorités", type:"tf", q:"Un véhicule effectuant une marche arrière a la priorité sur les autres.",
+    ans:false, exp:"Un véhicule en marche arrière ne bénéficie d'aucune priorité. C'est au conducteur qui recule de s'assurer que la manœuvre est sans danger." },
+
+  { cat:"Priorités", type:"qcm", q:"Sur une route à deux voies de sens contraire avec ligne discontinue, vous souhaitez tourner à gauche. Vous devez :",
+    opts:["Foncer en klaxonnant","Attendre un créneau sûr et céder le passage aux véhicules en face","Vous arrêter complètement 3 secondes","Mettre vos feux de détresse"],
+    ans:1, exp:"Pour tourner à gauche sur route bidirectionnelle, vous devez céder le passage aux véhicules venant en sens inverse." },
+
+  // ── NOUVELLES QUESTIONS — VITESSES ──
+  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale sur une voie express (route express hors agglo, 2 chaussées séparées) ?",
+    opts:["80 km/h","100 km/h","110 km/h","130 km/h"],
+    ans:1, exp:"Sur une route express (double chaussée avec séparateur, hors autoroute), la vitesse maximale est de 110 km/h par temps sec et 100 km/h par temps de pluie." },
+
+  { cat:"Vitesses", type:"tf", q:"En sortant d'une agglomération, vous pouvez accélérer avant d'avoir passé le panneau de fin d'agglomération.",
+    ans:false, exp:"La limitation de vitesse en agglomération s'applique jusqu'au panneau de fin d'agglomération. Vous ne pouvez accélérer qu'après l'avoir dépassé." },
+
+  { cat:"Vitesses", type:"qcm", q:"Un véhicule roulant à 90 km/h parcourt combien de mètres par seconde (environ) ?",
+    opts:["15 mètres","25 mètres","50 mètres","100 mètres"],
+    ans:1, exp:"À 90 km/h, on parcourt 25 mètres par seconde (90 ÷ 3,6 = 25 m/s). Utile pour calculer distances de réaction et de freinage." },
+
+  // ── NOUVELLES QUESTIONS — ALCOOL & STUPÉFIANTS ──
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Combien de verres d'alcool faut-il environ pour atteindre 0,5 g/L (taux légal) pour un adulte de 70 kg ?",
+    opts:["1 verre","2 verres","4 verres","6 verres"],
+    ans:1, exp:"En moyenne, 2 verres standard (bière 25cl, vin 10cl, alcool fort 3cl) suffisent pour atteindre le seuil légal. Le café et l'eau ne font pas baisser l'alcoolémie." },
+
+  { cat:"Alcool & Stupéfiants", type:"tf", q:"Le café permet de faire baisser rapidement le taux d'alcoolémie.",
+    ans:false, exp:"Seul le temps fait baisser le taux d'alcoolémie : environ 0,10 à 0,15 g/L par heure. Le café, l'eau froide ou l'exercice n'ont aucun effet." },
+
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Prendre certains médicaments (somnifères, anxiolytiques) et conduire est :",
+    opts:["Autorisé si la dose est faible","Toujours interdit","Dangereux et potentiellement interdit selon la vignette du médicament","Sans danger si on se sent bien"],
+    ans:2, exp:"Les médicaments sont classés de 1 à 3 selon leur impact sur la conduite. La vignette colorée indique le risque. Certains interdisent formellement de conduire." },
+
+  // ── NOUVELLES QUESTIONS — DISTANCES & FREINAGE ──
+  { cat:"Distances & Freinage", type:"qcm", q:"Sur autoroute à 130 km/h par temps sec, quelle est la distance d'arrêt totale approximative ?",
+    opts:["70 mètres","100 mètres","150 mètres","200 mètres"],
+    ans:2, exp:"À 130 km/h : distance de réaction (~36 m) + freinage (~115 m) = environ 150 mètres. C'est la longueur de 1,5 terrain de foot !" },
+
+  { cat:"Distances & Freinage", type:"tf", q:"Des pneus usés (sculpture < 1,6 mm) peuvent doubler la distance de freinage.",
+    ans:true, exp:"Des pneus usés réduisent considérablement l'adhérence, surtout sur sol mouillé. La distance de freinage peut effectivement doubler." },
+
+  { cat:"Distances & Freinage", type:"qcm", q:"La fatigue allonge la distance de freinage car :",
+    opts:["Elle abîme les freins","Elle allonge le temps de réaction","Elle réduit la pression des pneus","Elle n'a aucun effet"],
+    ans:1, exp:"La fatigue allonge le temps de réaction, parfois jusqu'à 2 ou 3 secondes. À 90 km/h, chaque seconde de réaction = 25 mètres supplémentaires avant de freiner." },
+
+  // ── NOUVELLES QUESTIONS — DÉPASSEMENT ──
+  { cat:"Dépassement", type:"tf", q:"Il est interdit de dépasser à proximité d'un passage piéton.",
+    ans:true, exp:"Le dépassement est interdit à proximité d'un passage pour piétons, car des piétons pourraient s'engager et le dépassement empêche de les voir." },
+
+  { cat:"Dépassement", type:"qcm", q:"Avant d'effectuer un dépassement, vous devez :",
+    opts:["Klaxonner fort et dépasser","Vérifier rétroviseurs, angle mort, mettre le clignotant, accélérer franchement","Juste allumer les feux de route","Appuyer deux fois sur les freins"],
+    ans:1, exp:"La séquence correcte : regarder dans les rétroviseurs, vérifier l'angle mort, mettre le clignotant gauche, attendre que la voie soit libre puis accélérer franchement." },
+
+  // ── NOUVELLES QUESTIONS — CEINTURE & SÉCURITÉ ──
+  { cat:"Ceinture & Sécurité", type:"qcm", q:"En cas d'accident avec déclenchement de l'airbag, l'airbag :",
+    opts:["Protège même sans ceinture","Remplace la ceinture si on est trop près","Complète la ceinture de sécurité — les deux sont nécessaires","Peut blesser si la ceinture est attachée"],
+    ans:2, exp:"L'airbag est conçu pour compléter la ceinture, pas la remplacer. Sans ceinture, le choc contre l'airbag peut être fatal." },
+
+  { cat:"Ceinture & Sécurité", type:"tf", q:"Une femme enceinte est dispensée du port de la ceinture de sécurité.",
+    ans:false, exp:"Le port de la ceinture est obligatoire pour tous, y compris les femmes enceintes. Des ceintures adaptées existent pour les femmes enceintes." },
+
+  { cat:"Ceinture & Sécurité", type:"qcm", q:"À quelle sanction s'expose-t-on en cas de non port de la ceinture ?",
+    opts:["Un simple avertissement","Une amende de 135 € et 3 points en moins","Une suspension de permis immédiate","Aucune sanction si passager arrière"],
+    ans:1, exp:"Le non-port de la ceinture coûte 135 € d'amende et 3 points de permis retirés, que ce soit à l'avant ou à l'arrière." },
+
+  // ── NOUVELLES QUESTIONS — STATIONNEMENT ──
+  { cat:"Stationnement", type:"qcm", q:"Le stationnement gênant (sur trottoir, devant une entrée de garage) peut entraîner :",
+    opts:["Un simple avertissement verbal","Une mise en fourrière du véhicule","Une amende de 17 €","Rien si c'est moins d'une heure"],
+    ans:1, exp:"Le stationnement gênant peut entraîner une mise en fourrière aux frais du propriétaire, en plus d'une amende." },
+
+  { cat:"Stationnement", type:"tf", q:"On peut stationner sur une place réservée aux personnes handicapées si on n'en a que pour 5 minutes.",
+    ans:false, exp:"Stationner sur une place PMR (personne à mobilité réduite) sans macaron est une infraction. L'amende est de 135 € et la mise en fourrière possible, quelle que soit la durée." },
+
+  // ── NOUVELLES QUESTIONS — ÉCLAIRAGE ──
+  { cat:"Éclairage", type:"qcm", q:"Dans un tunnel bien éclairé, vous devez :",
+    opts:["Éteindre vos phares car la route est éclairée","Allumer les feux de croisement","Allumer les feux de route","Mettre les feux de détresse"],
+    ans:1, exp:"Dans un tunnel, même bien éclairé, les feux de croisement sont obligatoires pour être vu des autres usagers." },
+
+  { cat:"Éclairage", type:"tf", q:"Les feux de position (feux de gabarit) seuls suffisent à rouler la nuit.",
+    ans:false, exp:"Les feux de position (veilleuses) ne sont pas suffisants pour rouler la nuit. Les feux de croisement sont obligatoires dès la tombée de la nuit." },
+
+  // ── NOUVELLES QUESTIONS — AUTOROUTE ──
+  { cat:"Autoroute", type:"qcm", q:"Quelle est la vitesse minimale obligatoire sur autoroute (voie de gauche) ?",
+    opts:["50 km/h","60 km/h","80 km/h","Aucune vitesse minimale"],
+    ans:1, exp:"Sur autoroute, la vitesse minimale est de 80 km/h sur la voie de gauche par temps sec. En dessous, on occupe indûment la voie de dépassement." },
+
+  { cat:"Autoroute", type:"qcm", q:"En cas de panne sur autoroute, après avoir mis le triangle et le gilet, vous devez :",
+    opts:["Rester dans le véhicule","Attendre derrière la glissière de sécurité","Marcher sur la BAU pour trouver du secours","Lever le capot pour signaler la panne"],
+    ans:1, exp:"En cas de panne, il faut se placer derrière la glissière de sécurité (si possible), jamais sur la BAU. Appelez le 15, 17, 18 ou 112." },
+
+  { cat:"Autoroute", type:"tf", q:"Sur autoroute, les animaux de compagnie doivent être attachés ou dans une cage.",
+    ans:true, exp:"Un animal en liberté dans le véhicule constitue un danger. Il doit être attaché avec un harnais adapté ou enfermé dans une cage." },
+
+  // ── NOUVELLES QUESTIONS — COMPORTEMENT ──
+  { cat:"Comportement", type:"qcm", q:"Vous approchez d'un passage à niveau. Les barrières commencent à descendre. Vous devez :",
+    opts:["Accélérer pour passer avant qu'elles soient fermées","Vous arrêter impérativement avant les barrières","Vous arrêter sur les rails si besoin","Klaxonner et passer lentement"],
+    ans:1, exp:"Dès que les barrières s'abaissent (ou que les feux clignotent), il est FORMELLEMENT interdit de passer. L'arrêt est obligatoire avant la ligne d'arrêt." },
+
+  { cat:"Comportement", type:"tf", q:"L'écoute de musique forte dans le véhicule est une infraction.",
+    ans:false, exp:"La musique forte n'est pas une infraction en soi, mais si elle empêche d'entendre les signaux sonores extérieurs (klaxon, sirène), le conducteur peut être sanctionné pour comportement dangereux." },
+
+  { cat:"Comportement", type:"qcm", q:"Il commence à neiger. Vous devez :",
+    opts:["Rouler normalement car votre voiture est récente","Réduire votre vitesse, augmenter les distances, éviter les freinages brusques","Chausser des pneus neige uniquement sur autoroute","Mettre les feux de route pour mieux voir"],
+    ans:1, exp:"Par temps de neige, réduisez votre vitesse, multipliez les distances de sécurité et évitez tout frein ou accélération brutal. Les pneus hiver sont recommandés (obligatoires dans certaines communes)." },
+
+  { cat:"Comportement", type:"tf", q:"En cas de malaise au volant, vous devez allumer vos feux de détresse, vous arrêter progressivement et appeler le 15.",
+    ans:true, exp:"En cas de malaise, allumez les feux de détresse pour prévenir les autres, immobilisez-vous dès que possible en sécurité, et appelez le SAMU (15)." },
+
+  // ── NOUVELLES QUESTIONS — ENVIRONNEMENT ──
+  { cat:"Environnement", type:"qcm", q:"Que signifie le pictogramme d'une voiture avec des flocons sur le panneau de signalisation ?",
+    opts:["Route verglacée ou enneigée possible","Vous entrez dans une zone de montagne","Circulation interdite par temps de neige","Vitesse limitée à 50 km/h"],
+    ans:0, exp:"Ce panneau de danger avertit que la chaussée peut être verglacée ou enneigée. Adaptez votre allure en conséquence." },
+
+  { cat:"Environnement", type:"tf", q:"Laisser tourner son moteur à l'arrêt (plus de 1 minute) est interdit en agglomération.",
+    ans:true, exp:"Le Code de la route interdit de laisser tourner le moteur à l'arrêt plus d'une minute en agglomération (pollution sonore et atmosphérique). Amende possible." },
+
+  { cat:"Environnement", type:"qcm", q:"En cas d'incendie sous le capot, vous devez :",
+    opts:["Ouvrir le capot pour arroser avec de l'eau","Couper le contact, éloigner tout le monde et appeler les secours sans ouvrir le capot","Continuer à rouler pour éteindre l'incendie","Verser de l'eau sur les roues"],
+    ans:1, exp:"N'ouvrez JAMAIS le capot en cas d'incendie (apport d'oxygène = explosion). Coupez le contact, évacuez tous les occupants, éloignez-vous et appelez le 18." },
+
+  // ── NOUVELLES QUESTIONS — VOIES ──
+  { cat:"Voies", type:"qcm", q:"Une voie de décélération (bretelle de sortie d'autoroute) sert à :",
+    opts:["Accélérer avant d'entrer sur l'autoroute","Ralentir avant de quitter l'autoroute","Dépasser les camions","S'arrêter en cas d'urgence"],
+    ans:1, exp:"La voie de décélération permet de ralentir progressivement après avoir quitté l'autoroute, sans gêner les autres véhicules." },
+
+  { cat:"Voies", type:"tf", q:"On peut emprunter une voie réservée aux véhicules d'urgence en cas de bouchon.",
+    ans:false, exp:"Les voies réservées aux véhicules d'urgence (pompiers, SAMU) ne peuvent jamais être empruntées par d'autres véhicules, même en cas de bouchon." },
+
+  { cat:"Voies", type:"qcm", q:"Le couloir de sécurité sur autoroute (lors d'un bouchon) consiste à :",
+    opts:["Rouler sur la BAU","Se serrer à droite (voie de droite) ou à gauche (autres voies) pour laisser un couloir central aux secours","S'arrêter complètement sur la voie de droite","Mettre les feux de détresse et klaxonner"],
+    ans:1, exp:"Le couloir de sécurité est obligatoire depuis 2018 : les véhicules de la voie de droite se serrent à droite, les autres se serrent à gauche, libérant un couloir central pour les secours." },
+
+  // ── NOUVELLES QUESTIONS — PERMIS ──
+  { cat:"Permis & Infractions", type:"qcm", q:"Après combien d'années sans infraction un permis probatoire atteint-il les 12 points ?",
+    opts:["2 ans","3 ans","5 ans","10 ans"],
+    ans:1, exp:"Le permis atteint 12 points après 3 ans sans infraction (2 ans si le conducteur a fait la conduite accompagnée)." },
+
+  { cat:"Permis & Infractions", type:"tf", q:"Griller un feu rouge coûte 4 points de permis.",
+    ans:true, exp:"Franchir un feu rouge ou un signal stop coûte 4 points de permis et une amende de 135 €. C'est l'une des infractions les plus graves." },
+
+  { cat:"Permis & Infractions", type:"qcm", q:"Le grand excès de vitesse (plus de 50 km/h au-dessus de la limite) peut entraîner :",
+    opts:["Une simple amende","La rétention immédiate du permis sur place","Un simple avertissement","Aucune sanction si c'est la première fois"],
+    ans:1, exp:"Un dépassement de plus de 50 km/h de la limite est un délit : rétention immédiate du permis, amende jusqu'à 1 500 €, suspension possible de 3 ans." },
+
+  { cat:"Permis & Infractions", type:"tf", q:"Le délit de fuite après un accident est puni par la loi, même si vous n'êtes pas en tort.",
+    ans:true, exp:"Tout conducteur impliqué dans un accident doit s'arrêter, même s'il n'est pas responsable. Le délit de fuite est puni de 3 ans d'emprisonnement et 75 000 € d'amende." },
+
+  // ── NOUVELLES QUESTIONS — CHARGE & REMORQUE ──
+  { cat:"Charge & Remorque", type:"qcm", q:"Quel document est nécessaire pour tirer une remorque de plus de 750 kg de PTAC ?",
+    opts:["Aucun document supplémentaire","Le permis BE","Le permis C","Une autorisation préfectorale"],
+    ans:1, exp:"Pour tracter une remorque dont le PTAC dépasse 750 kg et dont le total dépasse 3 500 kg, le permis BE est nécessaire." },
+
+  { cat:"Charge & Remorque", type:"tf", q:"Une remorque de moins de 750 kg peut être tractée sans plaque d'immatriculation.",
+    ans:false, exp:"Toute remorque, quelle que soit sa masse, doit obligatoirement avoir une plaque d'immatriculation identique à celle du véhicule tracteur." },
 ];
 
 // ════════════════════════════════════════════
