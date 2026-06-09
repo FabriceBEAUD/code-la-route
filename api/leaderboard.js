@@ -17,11 +17,17 @@ async function upstash(url, token, command) {
 
 async function kvGet(url, token) {
   const res = await upstash(url, token, ['GET', KEY]);
-  if (!res.result) return {};
-  try { return JSON.parse(res.result); } catch { return {}; }
+  if (res.result == null) return {};
+  // Upstash peut retourner un objet déjà parsé OU une string (parfois double-encodée)
+  let val = res.result;
+  if (typeof val === 'object') return val;                          // déjà un objet
+  try { val = JSON.parse(val); } catch { return {}; }              // 1er parse
+  if (typeof val === 'string') { try { val = JSON.parse(val); } catch { return {}; } } // 2ème si toujours string
+  return typeof val === 'object' ? val : {};
 }
 
 async function kvSet(url, token, data) {
+  // Stocker en tant que chaîne JSON simple
   await upstash(url, token, ['SET', KEY, JSON.stringify(data)]);
 }
 
