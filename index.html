@@ -1455,7 +1455,17 @@ function showResult() {
   document.getElementById('result-detail').textContent = detail;
 
   if (pass) setTimeout(launchConfetti, 200);
-  submitScore(); // Envoi du score au classement en ligne
+
+  // Envoi du score + feedback visuel
+  const syncEl = document.createElement('div');
+  syncEl.style.cssText = 'text-align:center;font-size:0.8rem;color:#888;margin-top:8px';
+  syncEl.textContent = '📡 Envoi du score en cours…';
+  document.getElementById('screen-result').appendChild(syncEl);
+
+  submitScore().then(ok => {
+    syncEl.textContent = ok ? '✅ Score sauvegardé dans le classement !' : '⚠️ Score non sauvegardé (hors ligne ?)';
+    syncEl.style.color = ok ? '#22c55e' : '#f59e0b';
+  });
 }
 
 // ════════════════════════════════════════════
@@ -1593,7 +1603,7 @@ async function showLeaderboard() {
 }
 
 async function submitScore() {
-  if (!currentUser || !currentUser.nom) return;
+  if (!currentUser || !currentUser.nom) return false;
   const payload = {
     user:        currentUser.user,
     nom:         currentUser.nom,
@@ -1609,9 +1619,11 @@ async function submitScore() {
       body: JSON.stringify(payload),
     });
     const data = await res.json();
-    if (!data.ok) console.warn('Erreur API score:', data.error);
+    if (!data.ok) { console.warn('Erreur API:', data.error); return false; }
+    return true;
   } catch (e) {
     console.warn('Score non synchronisé:', e.message);
+    return false;
   }
 }
 
