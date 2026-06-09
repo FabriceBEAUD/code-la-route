@@ -34,7 +34,11 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const data = await kvGet(url, token);
+      const raw  = await kvGet(url, token);
+      // Filtrer les entrées corrompues (sans nom valide)
+      const data = Object.fromEntries(
+        Object.entries(raw).filter(([, v]) => v && v.nom && v.nom !== 'undefined')
+      );
       return res.status(200).json(data);
     } catch (e) {
       return res.status(500).json({ error: 'Lecture KV échouée.' });

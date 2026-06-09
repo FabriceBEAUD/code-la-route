@@ -1517,21 +1517,33 @@ async function showLeaderboard() {
     const data = await res.json();
 
     // Trier par XP décroissant
+    // Nettoyer les entrées corrompues (sans nom valide ni XP)
     const sorted = Object.entries(data)
-      .map(([key, val]) => ({ key, ...val }))
-      .sort((a, b) => (b.xp || 0) - (a.xp || 0));
+      .map(([key, val]) => {
+        const userInfo = USERS.find(u => u.user === key) || {};
+        return {
+          key,
+          nom:        val.nom || userInfo.nom || key,
+          avatar:     userInfo.avatar || '👤',
+          xp:         val.xp || 0,
+          bestScore:  val.bestScore || 0,
+          gamesPlayed:val.gamesPlayed || 0,
+          bestStreak: val.bestStreak || 0,
+          lastPlayed: val.lastPlayed || null,
+        };
+      })
+      .filter(e => e.nom && e.nom !== 'undefined')
+      .sort((a, b) => b.xp - a.xp);
 
     const list = document.getElementById('lb-list');
 
     if (sorted.length === 0) {
-      list.innerHTML = '<div class="lb-empty">Aucun score enregistré pour l\'instant.<br>Soyez le premier à jouer ! 🚀</div>';
+      list.innerHTML = '<div class="lb-empty">Aucun score enregistré pour l\'instant.<br>Jouez une partie pour apparaître ici ! 🚀</div>';
       return;
     }
 
     list.innerHTML = sorted.map((entry, i) => {
-      const userInfo = USERS.find(u => u.user === entry.key) || {};
-      const avatar   = userInfo.avatar || '👤';
-      const isMe     = currentUser && currentUser.user === entry.key;
+      const isMe      = currentUser && currentUser.user === entry.key;
       const rankClass = i < 3 ? `rank-${i+1}` : '';
       const meClass   = isMe ? 'is-me' : '';
       const lastPlayed = entry.lastPlayed
@@ -1541,13 +1553,13 @@ async function showLeaderboard() {
       return `
         <div class="lb-row ${rankClass} ${meClass}">
           <div class="lb-rank">${RANK_MEDALS[i] || (i+1)}</div>
-          <div class="lb-avatar">${avatar}</div>
+          <div class="lb-avatar">${entry.avatar}</div>
           <div class="lb-info">
             <div class="lb-name">${entry.nom}${isMe ? ' <span style="font-size:0.75rem;color:#2563eb">(moi)</span>' : ''}</div>
-            <div class="lb-sub">🎮 ${entry.gamesPlayed || 0} parties · 🔥 Série max ${entry.bestStreak || 0} · 📅 ${lastPlayed}</div>
+            <div class="lb-sub">🎮 ${entry.gamesPlayed} parties · 🔥 Série max ${entry.bestStreak} · 📅 ${lastPlayed}</div>
           </div>
           <div class="lb-xp">
-            <div class="xp-num">⭐ ${entry.xp || 0}</div>
+            <div class="xp-num">⭐ ${entry.xp}</div>
             <div class="xp-label">XP total</div>
           </div>
         </div>`;
