@@ -828,7 +828,15 @@ header h1 span { color: #fbbf24; }
     <div class="lb-loading">Chargement du classement… ⏳</div>
   </div>
   <div class="lb-sync-status" id="lb-sync-status"></div>
-  <button class="btn-lb-back" onclick="goHome()">← Retour</button>
+  <div style="display:flex;gap:8px;margin-top:0">
+    <button class="btn-lb-back" onclick="goHome()" style="flex:1">← Retour</button>
+    <button class="btn-lb-back" onclick="showLeaderboard()" style="flex:1">🔄 Rafraîchir</button>
+  </div>
+  <div id="lb-admin" style="display:none;margin-top:10px;text-align:center">
+    <button onclick="resetLeaderboard()" style="background:none;border:none;color:#ef4444;font-size:0.75rem;cursor:pointer;text-decoration:underline">
+      🗑️ Réinitialiser le classement (admin)
+    </button>
+  </div>
 </div>
 
 <!-- ════ ÉCRAN QUIZ ════ -->
@@ -1506,10 +1514,19 @@ function showStreakPopup() {
 // ════════════════════════════════════════════
 const RANK_MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
 
+async function resetLeaderboard() {
+  if (!confirm('Effacer tous les scores ? Cette action est irréversible.')) return;
+  await fetch('/api/leaderboard?reset=true');
+  showLeaderboard();
+}
+
 async function showLeaderboard() {
   show('screen-leaderboard');
   document.getElementById('lb-list').innerHTML = '<div class="lb-loading">Chargement… ⏳</div>';
   document.getElementById('lb-sync-status').textContent = '';
+  // Bouton reset visible uniquement pour Papounet
+  document.getElementById('lb-admin').style.display =
+    currentUser && currentUser.user === 'papounet' ? 'block' : 'none';
 
   try {
     const res = await fetch('/api/leaderboard');
@@ -1576,20 +1593,23 @@ async function showLeaderboard() {
 }
 
 async function submitScore() {
-  if (!currentUser) return;
+  if (!currentUser || !currentUser.nom) return;
+  const payload = {
+    user:        currentUser.user,
+    nom:         currentUser.nom,
+    xp:          xpSession,
+    bestScore:   score,
+    gamesPlayed: 1,
+    bestStreak:  bestStreak,
+  };
   try {
-    await fetch('/api/leaderboard', {
+    const res = await fetch('/api/leaderboard', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user:       currentUser.user,
-        nom:        currentUser.nom,
-        xp:         xpSession,
-        bestScore:  score,
-        gamesPlayed: 1,
-        bestStreak: bestStreak,
-      })
+      body: JSON.stringify(payload),
     });
+    const data = await res.json();
+    if (!data.ok) console.warn('Erreur API score:', data.error);
   } catch (e) {
     console.warn('Score non synchronisé:', e.message);
   }
