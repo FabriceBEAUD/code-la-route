@@ -1376,6 +1376,182 @@ const questions = [
 
   { cat:"Charge & Remorque", type:"tf", q:"Une remorque de moins de 750 kg peut être tractée sans plaque d'immatriculation.",
     ans:false, exp:"Toute remorque, quelle que soit sa masse, doit obligatoirement avoir une plaque d'immatriculation identique à celle du véhicule tracteur." },
+
+  // ════════════════════════════════════════════
+  // QUESTIONS COMPLEXES — NIVEAU AVANCÉ
+  // ════════════════════════════════════════════
+
+  // ── SIGNALISATION AVANCÉE ──
+  { cat:"Signalisation", type:"qcm", q:"Vous voyez un panneau 'cédez le passage' suivi immédiatement d'un panneau 'stop'. Lequel s'applique ?",
+    opts:["Le cédez le passage, car il est en premier","Le stop, car il annule le précédent","Les deux s'appliquent simultanément","Aucun des deux, ils s'annulent"],
+    ans:1, exp:"Quand deux panneaux se succèdent, c'est le dernier panneau vu avant l'intersection qui s'applique. Le STOP annule et remplace le 'cédez le passage'." },
+
+  { cat:"Signalisation", type:"qcm", q:"Un panneau 'route prioritaire' (losange jaune) vous donne la priorité. Que se passe-t-il à chaque intersection ?",
+    opts:["Vous êtes prioritaire uniquement à gauche","Vous êtes prioritaire sur TOUTES les voies qui croisent votre route","Vous devez quand même céder aux ambulances","Vous êtes prioritaire uniquement si l'autre conducteur a un cédez-le-passage"],
+    ans:1, exp:"Sur une route prioritaire (signalée par le losange jaune), vous avez la priorité sur toutes les voies transversales à chaque intersection, sauf indication contraire ou véhicules prioritaires." },
+
+  { cat:"Signalisation", type:"qcm", q:"Vous voyez une ligne blanche discontinue à gauche et une ligne blanche continue à droite (ligne mixte). Vous pouvez :",
+    opts:["Dépasser dans les deux sens","Dépasser uniquement depuis votre côté (côté discontinu)","Ne pas dépasser du tout","Dépasser uniquement si la route est droite"],
+    ans:1, exp:"La ligne mixte s'interprète chacun de son côté : si vous avez la discontinue à gauche, le dépassement vous est autorisé. Si vous avez la continue à gauche, il vous est interdit." },
+
+  { cat:"Signalisation", type:"tf", q:"Un panneau d'interdiction (rond rouge) avec un écriteau 'sauf riverains' ne s'applique pas aux livreurs.",
+    ans:false, exp:"'Sauf riverains' signifie uniquement les personnes résidant dans la voie concernée. Les livreurs, commerçants ou visiteurs n'en bénéficient pas, même temporairement." },
+
+  { cat:"Signalisation", type:"qcm", q:"Que signifie un panneau de vitesse barré d'une ligne oblique (fin de limitation) sur une route nationale hors agglomération ?",
+    opts:["Vous pouvez rouler à toute vitesse","La limitation locale prend fin — la vitesse revient à 80 km/h","La limitation revient à 90 km/h (ancienne règle)","La limitation devient 110 km/h"],
+    ans:1, exp:"La fin de limitation locale ramène à la vitesse maximale légale du type de route : 80 km/h sur route bidirectionnelle hors agglomération depuis 2018." },
+
+  // ── PRIORITÉS AVANCÉES ──
+  { cat:"Priorités", type:"qcm", q:"Vous êtes sur une route prioritaire. Un véhicule débouche d'un chemin privé sur votre droite. Qui est prioritaire ?",
+    opts:["Le véhicule de droite, car règle de priorité à droite","Vous, car vous êtes sur une route prioritaire","Vous devez vous arrêter et négocier","Celui qui arrive le premier"],
+    ans:0, exp:"Attention piège ! Un chemin privé n'est pas une voie publique. La règle de priorité à droite ne s'applique pas ici : le véhicule sortant d'une propriété privée doit céder le passage à TOUS les usagers de la voie publique." },
+
+  { cat:"Priorités", type:"qcm", q:"À un carrefour en T, vous arrivez sur la barre horizontale du T. Qui est prioritaire ?",
+    opts:["Vous, car vous allez tout droit","Les véhicules venant de votre droite sur la voie transversale","Les véhicules sur la voie verticale du T, quelle que soit leur direction","Tout le monde, c'est une priorité à droite classique"],
+    ans:2, exp:"À un carrefour en T, les véhicules circulant sur la route qui forme la barre du T (voie continue) sont prioritaires sur ceux qui arrivent par la branche verticale, même sans signalisation." },
+
+  { cat:"Priorités", type:"tf", q:"Un cycliste qui emprunte une piste cyclable traversant une route prioritaire doit céder le passage aux voitures.",
+    ans:true, exp:"Une piste cyclable qui croise une route prioritaire n'est pas une voie prioritaire. Le cycliste doit céder le passage aux véhicules circulant sur la route prioritaire." },
+
+  { cat:"Priorités", type:"qcm", q:"Vous êtes engagé dans un giratoire et un véhicule d'urgence (sirène + gyrophare) arrive derrière vous. Vous devez :",
+    opts:["Accélérer pour sortir du giratoire le plus vite possible","Vous arrêter immédiatement dans le giratoire","Quitter le giratoire à la prochaine sortie et vous ranger sur le côté droit","Continuer normalement, vous êtes dans le giratoire"],
+    ans:2, exp:"Il ne faut jamais s'arrêter dans un giratoire. La bonne conduite est de quitter le giratoire à la prochaine sortie disponible et de se ranger immédiatement sur le côté droit." },
+
+  // ── VITESSES AVANCÉES ──
+  { cat:"Vitesses", type:"qcm", q:"La chaussée est mouillée sur une route nationale (80 km/h par temps sec). Quelle est la limite ?",
+    opts:["80 km/h, la pluie ne change pas la limite sur route","70 km/h","60 km/h","La limite reste 80 km/h mais il faut adapter son allure"],
+    ans:3, exp:"Sur route nationale (80 km/h), il n'existe pas de limitation spécifique par temps de pluie (contrairement à l'autoroute). La limitation reste 80 km/h, mais le conducteur doit adapter son allure aux conditions — ce qui peut engager sa responsabilité en cas d'accident." },
+
+  { cat:"Vitesses", type:"qcm", q:"Vous entrez dans une agglomération mais aucun panneau de vitesse n'est visible. Quelle vitesse s'applique ?",
+    opts:["80 km/h","70 km/h","50 km/h","30 km/h"],
+    ans:2, exp:"En agglomération (zone délimitée par les panneaux d'entrée et sortie de ville), la vitesse maximale par défaut est de 50 km/h, même en l'absence de panneau spécifique." },
+
+  { cat:"Vitesses", type:"tf", q:"Un radar automatique peut flasher un véhicule qui roule en dessous de la vitesse limite.",
+    ans:false, exp:"Les radars de vitesse sont conçus pour détecter les excès de vitesse (au-dessus de la limite). Ils ne peuvent pas verbaliser un véhicule roulant en dessous de la limite." },
+
+  { cat:"Vitesses", type:"qcm", q:"Quelle est la vitesse maximale autorisée pour un conducteur novice sur une voie express (2×2 voies hors autoroute) ?",
+    opts:["80 km/h","100 km/h","110 km/h","130 km/h"],
+    ans:1, exp:"Le conducteur novice (3 premières années) est limité à 100 km/h sur voie express ou route à chaussées séparées, contre 110 km/h pour un conducteur expérimenté." },
+
+  // ── ALCOOL AVANCÉ ──
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Un conducteur ayant un taux de 0,6 g/L (contravention) et qui récidive dans les 5 ans encourt :",
+    opts:["La même amende","Une amende doublée et une suspension de permis possible","Uniquement un stage de sensibilisation","Rien de plus si c'est la première récidive"],
+    ans:1, exp:"En cas de récidive d'alcoolémie entre 0,5 et 0,8 g/L dans les 5 ans, les sanctions sont aggravées : amende pouvant aller à 750 €, suspension de permis jusqu'à 3 ans." },
+
+  { cat:"Alcool & Stupéfiants", type:"tf", q:"Il est possible de refuser un dépistage d'alcoolémie à la demande des forces de l'ordre.",
+    ans:false, exp:"Le refus de se soumettre aux vérifications d'alcoolémie ou de stupéfiants est un délit puni de 2 ans d'emprisonnement et 4 500 € d'amende, plus le retrait de 6 points." },
+
+  { cat:"Alcool & Stupéfiants", type:"qcm", q:"Vous avez bu la veille. Le lendemain matin, votre taux d'alcoolémie peut encore être supérieur à la limite légale. Pourquoi ?",
+    opts:["L'alcool peut rester dans le sang jusqu'à 3 jours","Le corps élimine l'alcool lentement (~0,10-0,15 g/L/heure), une forte consommation peut rester détectable le lendemain","Le café du matin augmente le taux","L'alcool se concentre pendant le sommeil"],
+    ans:1, exp:"Le corps élimine l'alcool à environ 0,10-0,15 g/L par heure. Après une soirée avec beaucoup d'alcool, le taux peut encore être au-dessus du seuil légal le lendemain matin." },
+
+  // ── DISTANCES AVANCÉES ──
+  { cat:"Distances & Freinage", type:"qcm", q:"Vous roulez à 110 km/h. Votre distance de réaction (1 seconde) est d'environ :",
+    opts:["20 mètres","30 mètres","45 mètres","60 mètres"],
+    ans:1, exp:"À 110 km/h, on parcourt environ 30,5 mètres par seconde (110 ÷ 3,6 ≈ 30,5 m). En 1 seconde de temps de réaction, vous avancez donc de 30 mètres avant même de freiner." },
+
+  { cat:"Distances & Freinage", type:"qcm", q:"Quelle est l'influence d'un chargement lourd sur la distance de freinage ?",
+    opts:["Elle diminue grâce au poids supplémentaire","Elle reste identique","Elle augmente significativement","Elle double automatiquement"],
+    ans:2, exp:"Un véhicule chargé a une inertie plus grande. La distance de freinage augmente significativement avec la charge, surtout à haute vitesse. C'est une règle physique fondamentale." },
+
+  { cat:"Distances & Freinage", type:"tf", q:"L'ABS (système anti-blocage des roues) réduit toujours la distance de freinage.",
+    ans:false, exp:"L'ABS maintient la directivité du véhicule lors d'un freinage d'urgence (vous pouvez encore tourner), mais il ne réduit pas toujours la distance de freinage. Sur revêtement meuble (neige, gravier), l'ABS peut même augmenter légèrement la distance d'arrêt." },
+
+  // ── DÉPASSEMENT AVANCÉ ──
+  { cat:"Dépassement", type:"qcm", q:"Vous dépassez un cycliste sur route. Quelle distance latérale minimale devez-vous maintenir en agglomération ?",
+    opts:["50 cm","1 mètre","1,5 mètre","2 mètres"],
+    ans:1, exp:"En agglomération, la distance latérale minimale entre votre véhicule et un cycliste lors d'un dépassement est d'1 mètre. Hors agglomération, cette distance est portée à 1,5 mètre." },
+
+  { cat:"Dépassement", type:"qcm", q:"Vous suivez un véhicule qui dépasse. Pouvez-vous dépasser en même temps ?",
+    opts:["Oui si la route est large","Non, jamais","Oui si vous voyez que la route est libre loin devant","Non, sauf sur autoroute"],
+    ans:1, exp:"Les dépassements 'en file' (plusieurs véhicules qui dépassent simultanément) sont interdits. Vous devez attendre que le premier véhicule ait terminé son dépassement et se soit rabattu." },
+
+  { cat:"Dépassement", type:"tf", q:"Sur une route à 3 voies non séparées (dont une voie centrale pour les deux sens), le dépassement est autorisé sur la voie centrale.",
+    ans:true, exp:"Sur une route à 3 voies avec voie centrale alternée (flèches ou signalisation), le dépassement peut être effectué sur la voie centrale dans les zones marquées à cet effet, mais avec une vigilance maximale." },
+
+  // ── ENVIRONNEMENT AVANCÉ ──
+  { cat:"Environnement", type:"qcm", q:"Lors d'un accident, une personne est inconsciente mais respire. Quelle est la bonne position d'attente ?",
+    opts:["Sur le dos, bras le long du corps","En position latérale de sécurité (PLS)","Assise en la maintenant","Debout pour faciliter la respiration"],
+    ans:1, exp:"Une personne inconsciente qui respire doit être placée en Position Latérale de Sécurité (PLS) pour éviter qu'elle s'étouffe en cas de vomissement. Ne la déplacez pas si suspicion de traumatisme du rachis, sauf danger immédiat." },
+
+  { cat:"Environnement", type:"qcm", q:"Une personne ne respire plus suite à un accident. Que faites-vous en attendant les secours ?",
+    opts:["Rien, seuls les professionnels peuvent intervenir","Commencer un massage cardiaque (30 compressions / 2 insufflations)","La mettre en PLS","Lui donner à boire"],
+    ans:1, exp:"En cas d'arrêt cardiaque, pratiquez immédiatement un massage cardiaque : 30 compressions sternales (5-6 cm) suivies de 2 insufflations, jusqu'à l'arrivée des secours ou d'un défibrillateur." },
+
+  { cat:"Environnement", type:"tf", q:"Un conducteur peut être tenu responsable d'un accident même s'il n'en est pas la cause directe.",
+    ans:true, exp:"La loi Badinter (1985) prévoit une indemnisation automatique des victimes d'accidents. Un conducteur peut être impliqué et voir sa responsabilité civile engagée même sans faute directe. L'assurance intervient dans tous les cas." },
+
+  // ── VOIES AVANCÉES ──
+  { cat:"Voies", type:"qcm", q:"Sur une route à 4 voies dans le même sens, où doit circuler un poids lourd ?",
+    opts:["N'importe quelle voie","Sur les deux voies de droite uniquement","Sur la voie de droite uniquement","Sur la voie de gauche si elle est libre"],
+    ans:1, exp:"Les poids lourds (+ de 3,5 t) sont interdits sur les deux voies de gauche d'une route à 4 voies ou plus. Ils ne peuvent emprunter que les deux voies de droite." },
+
+  { cat:"Voies", type:"qcm", q:"Vous roulez sur l'autoroute et vous voyez des cônes orange délimitant une voie de travaux. Vous devez :",
+    opts:["Maintenir votre vitesse car les travaux sont protégés","Réduire votre vitesse à la limite indiquée et augmenter la distance de sécurité","Changer de voie immédiatement sans regarder","Vous arrêter et attendre la fin des travaux"],
+    ans:1, exp:"En zone de travaux, respectez impérativement la vitesse indiquée (souvent 90 ou 70 km/h) et augmentez vos distances de sécurité. Les travailleurs n'ont aucune protection physique suffisante." },
+
+  { cat:"Voies", type:"tf", q:"La ligne de rive (ligne blanche sur le bord droit de la chaussée) peut être franchie pour laisser passer un véhicule prioritaire.",
+    ans:true, exp:"La ligne de rive peut être franchie pour laisser passer un véhicule prioritaire, pour s'arrêter en cas d'urgence, ou pour faciliter le passage d'un autre véhicule dans certaines situations." },
+
+  // ── PERMIS AVANCÉ ──
+  { cat:"Permis & Infractions", type:"qcm", q:"Vous perdez votre dernier point de permis. Que se passe-t-il ?",
+    opts:["Vous recevez un avertissement et 6 mois pour récupérer des points","Votre permis est invalidé — vous devez repasser l'examen complet après un délai de 6 mois","Vous pouvez continuer à conduire pendant 3 mois","Votre permis est suspendu 1 an puis restitué"],
+    ans:1, exp:"Quand le solde de points atteint zéro, le permis est invalidé automatiquement. Après un délai de 6 mois minimum, vous devez repasser l'intégralité de l'examen (code + conduite)." },
+
+  { cat:"Permis & Infractions", type:"qcm", q:"Comment récupère-t-on des points sur son permis ?",
+    opts:["En ne commettant aucune infraction pendant 6 mois","En effectuant un stage de sensibilisation à la sécurité routière (récupération de 4 points max, plafonné à 12)","En payant une amende majorée","En conduisant de nuit"],
+    ans:1, exp:"Il existe deux façons de récupérer des points : 1) Automatiquement (sans infraction pendant 2 ou 3 ans) ; 2) En effectuant un stage volontaire de sensibilisation qui permet de récupérer jusqu'à 4 points (une fois par an, sans dépasser 12 points)." },
+
+  { cat:"Permis & Infractions", type:"tf", q:"Un mineur de 17 ans peut conduire seul sur la voie publique dans le cadre de la conduite accompagnée.",
+    ans:false, exp:"La conduite accompagnée (AAC) impose toujours la présence d'un accompagnateur qualifié. Le jeune conducteur ne peut JAMAIS conduire seul avant l'obtention de son permis, même à 17 ans." },
+
+  { cat:"Permis & Infractions", type:"qcm", q:"Quel est le montant maximal de l'amende pour usage du téléphone tenu en main au volant ?",
+    opts:["35 €","135 €","750 €","1 500 €"],
+    ans:1, exp:"L'usage du téléphone tenu en main au volant coûte 135 € d'amende (forfaitaire) et 3 points de permis. En cas d'accident simultané, les sanctions peuvent être alourdies." },
+
+  // ── COMPORTEMENT AVANCÉ ──
+  { cat:"Comportement", type:"qcm", q:"Vous roulez sur autoroute et un objet tombe de votre véhicule. Vous devez :",
+    opts:["Continuer si l'objet est petit","Vous arrêter sur la BAU, mettre le gilet, poser le triangle et appeler le 17 ou 112 pour signaler l'obstacle","Faire demi-tour pour récupérer l'objet","Mettre vos feux de détresse et reculer"],
+    ans:1, exp:"Tout objet tombé sur autoroute doit être signalé aux forces de l'ordre (17) ou via la borne d'appel d'urgence. Ne tentez JAMAIS de récupérer un objet sur l'autoroute — les demi-tours et marches arrière y sont interdits." },
+
+  { cat:"Comportement", type:"tf", q:"Le syndrome de la vision tunnel (focalisation sur un point) peut survenir à haute vitesse et est dangereux.",
+    ans:true, exp:"À haute vitesse, le champ de vision se rétrécit (vision tunnel) : à 130 km/h, le champ visuel passe de 180° à environ 30°. Vous ne voyez plus les bords de la route, ce qui est extrêmement dangereux." },
+
+  { cat:"Comportement", type:"qcm", q:"Vous roulez derrière un camion. Pour évaluer si vous êtes en zone de sécurité, vous devez :",
+    opts:["Voir les feux arrière du camion","Voir le rétroviseur gauche du camion et votre reflet dedans","Maintenir une distance de 10 mètres","Rouler dans l'axe central"],
+    ans:1, exp:"La règle des 'yeux dans le rétroviseur' : si vous ne voyez pas le rétroviseur gauche du camion ET votre reflet dedans, le chauffeur ne vous voit pas. Vous êtes dans un angle mort dangereux." },
+
+  { cat:"Comportement", type:"qcm", q:"Que faire si vous ressentez les premiers signes d'assoupissement au volant ?",
+    opts:["Ouvrir la fenêtre et mettre la musique plus fort","Boire un café et continuer","S'arrêter dès que possible, faire une pause de 20 min minimum","Accélérer pour arriver plus vite"],
+    ans:2, exp:"Les remèdes 'maison' (fenêtre, musique, café) ne font que retarder l'inévitable. Seul un arrêt et une vraie courte sieste (15-20 min) permet de récupérer. Sur autoroute, s'arrêter à l'aire la plus proche." },
+
+  // ── ÉCLAIRAGE AVANCÉ ──
+  { cat:"Éclairage", type:"qcm", q:"Vous croisez un véhicule la nuit. À quelle distance devez-vous passer en feux de croisement ?",
+    opts:["À 50 mètres","À 100 mètres","À 150 mètres","Uniquement quand vous le voyez"],
+    ans:1, exp:"Il faut passer en feux de croisement (codes) au moins 100 mètres avant de croiser un véhicule venant en sens inverse, pour ne pas éblouir son conducteur." },
+
+  { cat:"Éclairage", type:"tf", q:"Il est obligatoire d'allumer ses feux de croisement lors d'une forte pluie en plein jour.",
+    ans:true, exp:"Par forte pluie, brouillard ou tout condition réduisant la visibilité en journée, l'allumage des feux de croisement est obligatoire, même de jour. Cela permet d'être vu des autres conducteurs." },
+
+  // ── AUTOROUTE AVANCÉE ──
+  { cat:"Autoroute", type:"qcm", q:"Vous manquez votre sortie d'autoroute. Que faites-vous ?",
+    opts:["Vous arrêtez sur la BAU et faites marche arrière","Vous faites demi-tour par le terre-plein central","Vous continuez jusqu'à la prochaine sortie","Vous demandez aux autres conducteurs de vous laisser passer"],
+    ans:2, exp:"Sur autoroute, il est STRICTEMENT interdit de faire marche arrière ou demi-tour. La seule solution légale est de continuer jusqu'à la prochaine sortie, puis de faire demi-tour sur le réseau ordinaire." },
+
+  { cat:"Autoroute", type:"qcm", q:"Sur autoroute à 3 voies, vous dépassez sur la voie du milieu. Un véhicule arrive très vite par la voie de gauche. Vous devez :",
+    opts:["Accélérer pour vous rabattre plus vite","Maintenir votre vitesse et votre voie — c'est lui qui doit s'adapter","Vous déboîter sur la voie de droite si elle est libre, puis accélérer","Freiner brusquement pour le laisser passer"],
+    ans:1, exp:"Vous êtes en train d'effectuer un dépassement légal. L'autre conducteur qui arrive trop vite par derrière est en tort. Vous devez maintenir votre trajectoire et vitesse — un freinage ou un écart brusque serait plus dangereux." },
+
+  { cat:"Autoroute", type:"tf", q:"Les deux-roues motorisés peuvent circuler sur la bande d'arrêt d'urgence pour éviter les bouchons.",
+    ans:false, exp:"La BAU est interdite à tout véhicule en circulation, y compris les deux-roues motorisés. Seule exception : les véhicules à l'arrêt suite à une panne ou urgence." },
+
+  // ── CHARGE AVANCÉE ──
+  { cat:"Charge & Remorque", type:"qcm", q:"Vous chargez votre voiture. Le PTAC (Poids Total Autorisé en Charge) est de 1 900 kg et votre voiture pèse 1 400 kg à vide. Quelle charge utile maximale pouvez-vous transporter ?",
+    opts:["1 900 kg","1 400 kg","500 kg","900 kg"],
+    ans:2, exp:"La charge utile = PTAC - poids à vide = 1 900 - 1 400 = 500 kg. C'est le poids maximum de passagers + bagages + carburant que vous pouvez transporter légalement." },
+
+  { cat:"Charge & Remorque", type:"tf", q:"Le port de la ceinture est obligatoire pour les passagers d'une caravane en mouvement.",
+    ans:false, exp:"Il est formellement INTERDIT de voyager dans une caravane en mouvement. Les passagers doivent tous se trouver dans le véhicule tracteur, avec leur ceinture attachée." },
 ];
 
 // ════════════════════════════════════════════
