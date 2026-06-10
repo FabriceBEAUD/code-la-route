@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Générateur d'icônes PWA</title>
+<style>body{font-family:sans-serif;padding:30px;background:#0f172a;color:#fff;text-align:center}
+canvas{display:none} .btn{background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;cursor:pointer;margin:8px}
+.btn:hover{background:#1d4ed8} h1{margin-bottom:20px} p{margin-bottom:20px;opacity:.7}</style>
+</head>
+<body>
+<h1>🚗 Générateur d'icônes PWA</h1>
+<p>Cliquez sur chaque bouton pour télécharger l'icône correspondante dans ce dossier <code>icons/</code></p>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<br>
+<button class="btn" onclick="download(192)">⬇️ Télécharger icon-192.png</button>
+<button class="btn" onclick="download(512)">⬇️ Télécharger icon-512.png</button>
+<p style="margin-top:30px;font-size:13px;opacity:.5">Après téléchargement, renommez les fichiers en <code>icon-192.png</code> et <code>icon-512.png</code> et placez-les ici.</p>
+
+<script>
+function drawIcon(size) {
+  const c = document.getElementById('c' + size);
+  const ctx = c.getContext('2d');
+  const s = size;
+
+  // Fond dégradé bleu nuit
+  const grad = ctx.createLinearGradient(0, 0, s, s);
+  grad.addColorStop(0, '#0f172a');
+  grad.addColorStop(1, '#1e3a5f');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, s, s, s * 0.18);
+  ctx.fill();
+
+  // Cercle lumineux
+  const glow = ctx.createRadialGradient(s/2, s/2.2, 0, s/2, s/2.2, s*0.38);
+  glow.addColorStop(0, 'rgba(37,99,235,0.5)');
+  glow.addColorStop(1, 'rgba(37,99,235,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, s, s);
+
+  const fs = s / 192;
+
+  // Emoji voiture
+  ctx.font = `${Math.round(80 * fs)}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🚗', s / 2, s * 0.38);
+
+  // Titre
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${Math.round(18 * fs)}px 'Segoe UI', sans-serif`;
+  ctx.fillText('CODE', s / 2, s * 0.68);
+
+  ctx.fillStyle = '#f59e0b';
+  ctx.font = `bold ${Math.round(14 * fs)}px 'Segoe UI', sans-serif`;
+  ctx.fillText('PAPOUNET', s / 2, s * 0.80);
+
+  // Petites étoiles décoratives
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = `${Math.round(10 * fs)}px serif`;
+  ctx.fillText('⭐⭐⭐', s / 2, s * 0.90);
+}
+
+function download(size) {
+  drawIcon(size);
+  const c = document.getElementById('c' + size);
+  const a = document.createElement('a');
+  a.download = `icon-${size}.png`;
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+
+drawIcon(192);
+drawIcon(512);
+</script>
+</body>
+</html>
