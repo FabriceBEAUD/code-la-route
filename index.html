@@ -224,6 +224,125 @@ header h1 span { color: #fbbf24; }
 
 .login-footer { margin-top: 18px; font-size: 0.75rem; color: #bbb; }
 
+.login-link {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--bleu-vif);
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: center;
+  padding: 4px;
+}
+
+/* ── ÉCRAN INSCRIPTION ── */
+#screen-register {
+  background: white;
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  text-align: center;
+  margin-top: 10px;
+}
+#screen-register h2 { font-size: 1.3rem; color: var(--bleu); font-weight: 800; margin-bottom: 4px; }
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 12px 0 18px;
+}
+.avatar-opt {
+  font-size: 1.6rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, transform 0.1s;
+  background: #f9fafb;
+}
+.avatar-opt.selected {
+  border-color: var(--bleu-vif);
+  background: #eff6ff;
+  transform: scale(1.1);
+}
+.register-success {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+  display: none;
+  text-align: left;
+  border-left: 3px solid #16a34a;
+}
+
+/* ── ÉCRAN ADMIN ── */
+#screen-admin {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--ombre);
+  margin-top: 10px;
+}
+#screen-admin h2 { font-size: 1.2rem; color: var(--bleu); font-weight: 800; margin-bottom: 16px; text-align: center; }
+.code-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.code-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  border: 1px solid #e5e7eb;
+}
+.code-item .code-val {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--bleu);
+}
+.code-item .code-status-used { color: #9ca3af; font-size: 0.78rem; }
+.code-item .code-status-free { color: #16a34a; font-size: 0.78rem; font-weight: 700; }
+.btn-generate {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 12px;
+  transition: transform 0.15s;
+}
+.btn-generate:hover { transform: translateY(-2px); }
+.copy-btn {
+  background: #eff6ff;
+  color: var(--bleu-vif);
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 /* ── ÉCRAN ACCUEIL ── */
 #screen-home {
   background: white;
@@ -827,7 +946,88 @@ header h1 span { color: #fbbf24; }
   </div>
   <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
   <button class="btn-login" onclick="doLogin()">Se connecter →</button>
-  <p class="login-footer">Application privée — accès sur invitation du Papounet 🚗</p>
+  <button class="login-link" onclick="show('screen-register')">🎫 J'ai un code d'invitation → Créer mon compte</button>
+  <p id="login-car-tap" class="login-footer" onclick="adminTap()" style="cursor:pointer">Application privée — accès sur invitation du Papounet 🚗</p>
+</div>
+
+<!-- ════ ÉCRAN INSCRIPTION ════ -->
+<div id="screen-register">
+  <div class="login-car">🎫</div>
+  <h2>Créer mon compte</h2>
+  <p class="login-sub">Entre ton code d'invitation et choisis ton profil.</p>
+
+  <div class="login-field">
+    <label>Code d'invitation</label>
+    <input type="text" id="reg-code" placeholder="XXXX-XXXX" autocomplete="off"
+      style="text-transform:uppercase;letter-spacing:2px;font-family:monospace;font-size:1.1rem"
+      oninput="this.value=this.value.toUpperCase()">
+  </div>
+  <div class="login-field">
+    <label>Ton prénom (affiché)</label>
+    <input type="text" id="reg-nom" placeholder="Ex : Sophie">
+  </div>
+  <div class="login-field">
+    <label>Identifiant de connexion</label>
+    <input type="text" id="reg-user" placeholder="Ex : sophie (sans accent, sans espace)" autocomplete="username">
+  </div>
+  <div class="login-field">
+    <label>Mot de passe</label>
+    <input type="password" id="reg-pass" placeholder="Choisis un mot de passe" autocomplete="new-password">
+  </div>
+  <div class="login-field" style="text-align:left">
+    <label>Ton avatar</label>
+    <div class="avatar-grid" id="avatar-grid">
+      <div class="avatar-opt selected" data-av="🙂" onclick="selectAvatar(this)">🙂</div>
+      <div class="avatar-opt" data-av="👦" onclick="selectAvatar(this)">👦</div>
+      <div class="avatar-opt" data-av="👧" onclick="selectAvatar(this)">👧</div>
+      <div class="avatar-opt" data-av="👨" onclick="selectAvatar(this)">👨</div>
+      <div class="avatar-opt" data-av="👩" onclick="selectAvatar(this)">👩</div>
+      <div class="avatar-opt" data-av="👴" onclick="selectAvatar(this)">👴</div>
+      <div class="avatar-opt" data-av="👵" onclick="selectAvatar(this)">👵</div>
+      <div class="avatar-opt" data-av="🧔" onclick="selectAvatar(this)">🧔</div>
+      <div class="avatar-opt" data-av="👸" onclick="selectAvatar(this)">👸</div>
+      <div class="avatar-opt" data-av="🤴" onclick="selectAvatar(this)">🤴</div>
+      <div class="avatar-opt" data-av="🦸" onclick="selectAvatar(this)">🦸</div>
+      <div class="avatar-opt" data-av="🚀" onclick="selectAvatar(this)">🚀</div>
+      <div class="avatar-opt" data-av="⚡" onclick="selectAvatar(this)">⚡</div>
+      <div class="avatar-opt" data-av="🔥" onclick="selectAvatar(this)">🔥</div>
+      <div class="avatar-opt" data-av="🌟" onclick="selectAvatar(this)">🌟</div>
+      <div class="avatar-opt" data-av="🏆" onclick="selectAvatar(this)">🏆</div>
+    </div>
+  </div>
+
+  <div class="login-error" id="reg-error"></div>
+  <div class="register-success" id="reg-success">✅ Compte créé ! Connexion en cours…</div>
+  <button class="btn-login" onclick="doRegister()">Créer mon compte →</button>
+  <button class="login-link" onclick="show('screen-login')">← Retour à la connexion</button>
+</div>
+
+<!-- ════ ÉCRAN ADMIN ════ -->
+<div id="screen-admin">
+  <h2>🔑 Panneau Admin</h2>
+  <div class="login-field">
+    <label>Mot de passe admin</label>
+    <input type="password" id="admin-pass" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') loadAdminPanel()">
+  </div>
+  <div class="login-error" id="admin-error"></div>
+  <button class="btn-login" onclick="loadAdminPanel()">Accéder →</button>
+
+  <div id="admin-panel" style="display:none;margin-top:20px">
+    <div class="login-field">
+      <label>Libellé du code (optionnel)</label>
+      <input type="text" id="admin-label" placeholder="Ex : Pour Camille">
+    </div>
+    <button class="btn-generate" onclick="generateInviteCode()">✨ Générer un code d'invitation</button>
+    <div id="new-code-box" style="display:none;background:#f0fdf4;border-radius:12px;padding:16px;margin-top:12px;text-align:center">
+      <p style="font-size:0.8rem;color:#16a34a;margin-bottom:6px">Code généré :</p>
+      <p id="new-code-val" style="font-family:monospace;font-size:1.6rem;font-weight:900;color:#15803d;letter-spacing:3px"></p>
+      <button class="copy-btn" style="margin-top:8px" onclick="copyCode()">📋 Copier</button>
+    </div>
+    <div class="code-list" id="code-list"></div>
+  </div>
+
+  <button class="login-link" style="margin-top:16px" onclick="show('screen-login')">← Retour</button>
 </div>
 
 <!-- ════ ÉCRAN ACCUEIL ════ -->
@@ -1710,7 +1910,7 @@ let xpTotal        = 0;
 // ════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════
-const SCREENS = ['screen-login','screen-home','screen-quiz','screen-result','screen-leaderboard'];
+const SCREENS = ['screen-login','screen-register','screen-admin','screen-home','screen-quiz','screen-result','screen-leaderboard'];
 
 function show(id) {
   SCREENS.forEach(s => { const el = document.getElementById(s); if(el) el.style.display = 'none'; });
@@ -1726,30 +1926,172 @@ function goHome() {
 // ════════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════════
-function doLogin() {
+// ── Compteur de taps caché pour accès admin ──
+let adminTapCount = 0, adminTapTimer = null;
+function adminTap() {
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(() => { adminTapCount = 0; }, 2000);
+  if (adminTapCount >= 5) { adminTapCount = 0; show('screen-admin'); }
+}
+
+// ── Sélection avatar ──
+function selectAvatar(el) {
+  document.querySelectorAll('.avatar-opt').forEach(a => a.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── Inscription ──
+async function doRegister() {
+  const code   = document.getElementById('reg-code').value.trim().toUpperCase();
+  const nom    = document.getElementById('reg-nom').value.trim();
+  const user   = document.getElementById('reg-user').value.trim();
+  const pass   = document.getElementById('reg-pass').value;
+  const avatar = document.querySelector('.avatar-opt.selected')?.dataset.av || '🙂';
+  const errEl  = document.getElementById('reg-error');
+  const okEl   = document.getElementById('reg-success');
+
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if (!code || !nom || !user || !pass) {
+    errEl.textContent = 'Tous les champs sont obligatoires.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const r = await fetch('/api/auth?action=register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, nom, username: user, pass, avatar }),
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      errEl.textContent = data.error || 'Erreur inconnue.';
+      errEl.style.display = 'block';
+      return;
+    }
+    okEl.style.display = 'block';
+    setTimeout(() => {
+      currentUser = data.user;
+      sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+      show('screen-home');
+      updateGlobalStats();
+    }, 1200);
+  } catch {
+    errEl.textContent = 'Erreur réseau. Vérifie ta connexion.';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── Admin : charger le panneau ──
+async function loadAdminPanel() {
+  const pass  = document.getElementById('admin-pass').value;
+  const errEl = document.getElementById('admin-error');
+  errEl.style.display = 'none';
+  try {
+    const r = await fetch(`/api/auth?action=codes&adminPass=${encodeURIComponent(pass)}`);
+    const data = await r.json();
+    if (!r.ok) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+    document.getElementById('admin-panel').style.display = 'block';
+    renderCodeList(data);
+  } catch {
+    errEl.textContent = 'Erreur réseau.';
+    errEl.style.display = 'block';
+  }
+}
+
+function renderCodeList(codes) {
+  const list = document.getElementById('code-list');
+  const entries = Object.entries(codes).sort((a,b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
+  if (!entries.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:0.85rem;text-align:center;margin-top:8px">Aucun code généré.</p>'; return; }
+  list.innerHTML = entries.map(([code, info]) => `
+    <div class="code-item">
+      <div>
+        <div class="code-val">${code}</div>
+        ${info.label ? `<div style="font-size:0.75rem;color:#6b7280">${info.label}</div>` : ''}
+      </div>
+      <div>
+        ${info.used
+          ? `<div class="code-status-used">✗ Utilisé par ${info.usedBy || '?'}</div>`
+          : `<div class="code-status-free">✓ Disponible</div>`}
+      </div>
+    </div>`).join('');
+}
+
+async function generateInviteCode() {
+  const pass  = document.getElementById('admin-pass').value;
+  const label = document.getElementById('admin-label').value.trim();
+  try {
+    const r = await fetch('/api/auth?action=generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminPass: pass, label }),
+    });
+    const data = await r.json();
+    if (!r.ok) { alert(data.error); return; }
+    document.getElementById('new-code-val').textContent = data.code;
+    document.getElementById('new-code-box').style.display = 'block';
+    document.getElementById('admin-label').value = '';
+    await loadAdminPanel();
+  } catch { alert('Erreur réseau.'); }
+}
+
+function copyCode() {
+  const code = document.getElementById('new-code-val').textContent;
+  navigator.clipboard?.writeText(code).then(() => alert(`Code copié : ${code}`));
+}
+
+async function doLogin() {
   const u = document.getElementById('input-user').value.trim().toLowerCase();
   const p = document.getElementById('input-pass').value;
   const errEl = document.getElementById('login-error');
 
+  // 1. Vérification dans le tableau local (famille existante)
   const found = USERS.find(x => x.user.toLowerCase() === u && x.pass === p);
 
-  if (!found) {
-    errEl.style.display = 'block';
-    errEl.textContent = 'Identifiant ou mot de passe incorrect. ❌';
-    document.getElementById('input-pass').value = '';
+  if (found) {
+    if (!found.actif) {
+      errEl.style.display = 'block';
+      errEl.textContent = 'Accès désactivé. Contacte le Papounet ! 🚗';
+      return;
+    }
+    errEl.style.display = 'none';
+    currentUser = found;
+    document.getElementById('header-username').textContent = found.nom;
+    document.getElementById('header-user').style.display = 'flex';
+    document.getElementById('header-subtitle').style.display = 'none';
+    goHome();
     return;
   }
-  if (!found.actif) {
-    errEl.style.display = 'block';
-    errEl.textContent = 'Accès désactivé. Contacte le Papounet ! 🚗';
-    return;
-  }
+
+  // 2. Pas trouvé localement → essai via l'API (nouveaux inscrits)
   errEl.style.display = 'none';
-  currentUser = found;
-  document.getElementById('header-username').textContent = found.nom;
-  document.getElementById('header-user').style.display = 'flex';
-  document.getElementById('header-subtitle').style.display = 'none';
-  goHome();
+  errEl.textContent = '';
+  try {
+    const r = await fetch('/api/auth?action=login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, pass: p }),
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      errEl.textContent = data.error || 'Identifiant ou mot de passe incorrect. ❌';
+      errEl.style.display = 'block';
+      document.getElementById('input-pass').value = '';
+      return;
+    }
+    errEl.style.display = 'none';
+    currentUser = data.user;
+    document.getElementById('header-username').textContent = data.user.nom;
+    document.getElementById('header-user').style.display = 'flex';
+    document.getElementById('header-subtitle').style.display = 'none';
+    goHome();
+  } catch {
+    errEl.textContent = 'Erreur réseau. Vérifie ta connexion. ❌';
+    errEl.style.display = 'block';
+  }
 }
 
 function logout() {
