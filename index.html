@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Le code de la route du Papounet 🚗</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
 /* ── VARIABLES ── */
 :root {
@@ -1760,13 +1763,34 @@ function selectMode(el) {
 // ════════════════════════════════════════════
 // QUIZ
 // ════════════════════════════════════════════
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
 function startQuiz() {
-  let pool = [...questions];
-  if (selectedMode === 'qcm') pool = pool.filter(q => q.type === 'qcm');
-  if (selectedMode === 'tf')  pool = pool.filter(q => q.type === 'tf');
-  pool = pool.sort(() => Math.random() - 0.5);
   const count = selectedMode === 'exam' ? 40 : 20;
-  quizQuestions = pool.slice(0, Math.min(count, pool.length));
+
+  if (selectedMode === 'qcm') {
+    quizQuestions = shuffle(questions.filter(q => q.type === 'qcm')).slice(0, count);
+
+  } else if (selectedMode === 'tf') {
+    quizQuestions = shuffle(questions.filter(q => q.type === 'tf')).slice(0, count);
+
+  } else {
+    // Mode Mix ou Examen : garantir un quota de chaque type
+    const qcmPool = shuffle(questions.filter(q => q.type === 'qcm'));
+    const tfPool  = shuffle(questions.filter(q => q.type === 'tf'));
+    const mcmPool = shuffle(questions.filter(q => q.type === 'mcm'));
+
+    // Quota : ~55% QCM, ~25% Vrai/Faux, ~20% MCM (comme l'examen réel)
+    const nMcm = Math.min(Math.round(count * 0.20), mcmPool.length); // ~4 sur 20, ~8 sur 40
+    const nTf  = Math.min(Math.round(count * 0.25), tfPool.length);  // ~5 sur 20, ~10 sur 40
+    const nQcm = count - nMcm - nTf;
+
+    quizQuestions = shuffle([
+      ...qcmPool.slice(0, nQcm),
+      ...tfPool.slice(0, nTf),
+      ...mcmPool.slice(0, nMcm),
+    ]);
+  }
 
   currentIndex = score = xpSession = streak = 0;
   answered = false;
