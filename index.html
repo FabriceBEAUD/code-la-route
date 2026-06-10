@@ -930,7 +930,7 @@ header h1 span { color: #fbbf24; }
 
 <!-- ════ ÉCRAN LOGIN ════ -->
 <div id="screen-login">
-  <div class="login-car">🚗</div>
+  <div class="login-car" id="login-car" onclick="adminTap()" style="cursor:pointer;user-select:none">🚗</div>
   <h2>Bonjour !</h2>
   <p class="login-sub">Entre ton identifiant et ton mot de passe pour accéder à l'application du Papounet.</p>
 
@@ -947,7 +947,7 @@ header h1 span { color: #fbbf24; }
   <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
   <button class="btn-login" onclick="doLogin()">Se connecter →</button>
   <button class="login-link" onclick="show('screen-register')">🎫 J'ai un code d'invitation → Créer mon compte</button>
-  <p id="login-car-tap" class="login-footer" onclick="adminTap()" style="cursor:pointer">Application privée — accès sur invitation du Papounet 🚗</p>
+  <p class="login-footer">Application privée — accès sur invitation du Papounet</p>
 </div>
 
 <!-- ════ ÉCRAN INSCRIPTION ════ -->
@@ -1931,8 +1931,8 @@ let adminTapCount = 0, adminTapTimer = null;
 function adminTap() {
   adminTapCount++;
   clearTimeout(adminTapTimer);
-  adminTapTimer = setTimeout(() => { adminTapCount = 0; }, 2000);
-  if (adminTapCount >= 5) { adminTapCount = 0; show('screen-admin'); }
+  adminTapTimer = setTimeout(() => { adminTapCount = 0; }, 3000);
+  if (adminTapCount >= 3) { adminTapCount = 0; show('screen-admin'); }
 }
 
 // ── Sélection avatar ──
