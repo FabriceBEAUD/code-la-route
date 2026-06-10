@@ -1,5 +1,6 @@
 {
-  "name": "code-la-route",
+  "name": "code-la-route-papounet",
   "version": "1.0.0",
+  "description": "Application de révision du code de la route — jeu en famille",
   "type": "module"
 }
