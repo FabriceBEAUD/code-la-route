@@ -1,5 +1,5 @@
 // Service Worker — Code de la route du Papounet
-const CACHE = 'code-papounet-v1';
+const CACHE = 'code-papounet-v3';
 
 const PRECACHE = [
   '/',
