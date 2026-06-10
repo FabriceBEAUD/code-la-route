@@ -485,6 +485,39 @@ header h1 span { color: #fbbf24; }
 .tf-btn.faux.correct { border-color: var(--rouge); background: #fef2f2; color: #991b1b; }
 .tf-btn.wrong { border-color: #d1d5db; background: #f9fafb; color: #9ca3af; opacity: 0.7; }
 
+/* MCM — réponses multiples */
+.mcm-hint {
+  font-size: 0.8rem;
+  color: var(--violet);
+  font-weight: 700;
+  margin: 0 20px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.answer-btn.mcm-selected {
+  border-color: var(--violet);
+  background: #f5f3ff;
+}
+.answer-btn.mcm-selected .letter { background: var(--violet); color: white; }
+
+.answer-btn.partial-correct {
+  border-color: var(--jaune);
+  background: #fffbeb;
+}
+.answer-btn.partial-correct .letter { background: var(--jaune); color: white; }
+
+.btn-validate {
+  background: linear-gradient(135deg, var(--violet), #6d28d9);
+  color: white; border: none; border-radius: 14px;
+  padding: 14px 24px; font-size: 1rem; font-weight: 800;
+  cursor: pointer; width: calc(100% - 40px);
+  margin: 10px 20px 0; display: none;
+  transition: transform 0.15s;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.35);
+}
+.btn-validate:hover { transform: translateY(-2px); }
+
 /* Feedback */
 .feedback-box {
   border-radius: 14px;
@@ -873,6 +906,9 @@ header h1 span { color: #fbbf24; }
 
     <!-- RÉPONSES -->
     <div id="q-answers"></div>
+
+    <!-- BOUTON VALIDER (MCM) -->
+    <button class="btn-validate" id="btn-validate" onclick="validateMCM()">✔ Valider mes réponses</button>
 
     <!-- FEEDBACK -->
     <div class="feedback-box" id="feedback">
@@ -1552,6 +1588,92 @@ const questions = [
 
   { cat:"Charge & Remorque", type:"tf", q:"Le port de la ceinture est obligatoire pour les passagers d'une caravane en mouvement.",
     ans:false, exp:"Il est formellement INTERDIT de voyager dans une caravane en mouvement. Les passagers doivent tous se trouver dans le véhicule tracteur, avec leur ceinture attachée." },
+
+  // ════════════════════════════════════════════
+  // QUESTIONS À RÉPONSES MULTIPLES (MCM)
+  // Format réel de l'examen — cochez TOUTES les bonnes réponses
+  // ans: tableau d'indices des bonnes réponses
+  // ════════════════════════════════════════════
+
+  { cat:"Signalisation", type:"mcm",
+    q:"Parmi ces situations, lesquelles imposent un ARRÊT OBLIGATOIRE ? (plusieurs réponses)",
+    opts:["Un panneau STOP","Un feu rouge fixe","Un feu orange fixe si l'arrêt est possible","Un panneau 'cédez le passage'","Un feu vert"],
+    ans:[0,1,2], exp:"L'arrêt est obligatoire au STOP (toujours), au feu rouge, et au feu orange si on peut s'arrêter sans danger. Le 'cédez le passage' et le feu vert n'imposent pas l'arrêt." },
+
+  { cat:"Priorités", type:"mcm",
+    q:"Dans lesquels de ces cas bénéficiez-vous de la priorité de passage ? (plusieurs réponses)",
+    opts:["Vous êtes engagé dans un giratoire","Vous roulez sur une route signalée 'route prioritaire'","Vous venez de la droite à une intersection non signalisée","Un véhicule sort d'un chemin privé sur votre gauche","Vous clignotez à gauche pour tourner"],
+    ans:[0,1,2,3], exp:"Vous êtes prioritaire : dans le giratoire (véhicules engagés), sur route prioritaire, à droite d'une intersection non signalisée, et face à un véhicule sortant d'un chemin privé (quelle que soit la direction). Clignoter ne confère aucune priorité." },
+
+  { cat:"Vitesses", type:"mcm",
+    q:"La limitation de vitesse est RÉDUITE par rapport au temps sec dans lesquels de ces cas ? (plusieurs réponses)",
+    opts:["Par temps de pluie sur autoroute (130 → 110 km/h)","Par temps de pluie sur route nationale (80 km/h)","Par temps de neige sur autoroute (110 → 50 km/h)","Par brouillard dense (visibilité < 50 m) sur toute route","Pour un conducteur novice sur autoroute"],
+    ans:[0,2,3,4], exp:"La pluie réduit la limite sur autoroute (130→110) mais PAS sur route nationale (reste 80 km/h). La neige sur autoroute impose 50 km/h, le brouillard dense impose 50 km/h partout, et le conducteur novice est limité à 110 km/h sur autoroute." },
+
+  { cat:"Alcool & Stupéfiants", type:"mcm",
+    q:"Lesquelles de ces affirmations sur l'alcool au volant sont VRAIES ? (plusieurs réponses)",
+    opts:["Le café fait baisser l'alcoolémie","Un conducteur novice est limité à 0,2 g/L","L'alcoolémie à 0,8 g/L ou plus est un délit","Refuser l'éthylotest est une infraction","Deux verres standard suffisent à atteindre 0,5 g/L environ"],
+    ans:[1,2,3,4], exp:"VRAI : taux novice 0,2 g/L, délit à 0,8 g/L, refus éthylotest sanctionné, 2 verres ≈ 0,5 g/L. FAUX : le café ne fait pas baisser le taux — seul le temps agit (0,10 à 0,15 g/L/heure)." },
+
+  { cat:"Distances & Freinage", type:"mcm",
+    q:"Lesquels de ces facteurs ALLONGENT la distance de freinage ? (plusieurs réponses)",
+    opts:["La vitesse élevée","Un véhicule chargé","Des pneus neufs","Une chaussée mouillée","La fatigue du conducteur"],
+    ans:[0,1,3,4], exp:"Allongent la distance d'arrêt : vitesse (distance augmente au carré), charge lourde (inertie), pluie (adhérence réduite), fatigue (temps de réaction plus long). Les pneus NEUFS améliorent l'adhérence donc réduisent la distance." },
+
+  { cat:"Ceinture & Sécurité", type:"mcm",
+    q:"Lesquels de ces équipements de sécurité sont OBLIGATOIRES dans tout véhicule particulier en France ? (plusieurs réponses)",
+    opts:["Un gilet de haute visibilité","Un triangle de présignalisation","Un extincteur","Un éthylotest NF","Un kit de premiers secours"],
+    ans:[0,1], exp:"Seuls le gilet et le triangle sont OBLIGATOIRES dans tout véhicule particulier. L'extincteur, l'éthylotest et le kit de secours sont recommandés mais non obligatoires pour les voitures de tourisme (l'éthylotest l'était mais l'obligation a été suspendue)." },
+
+  { cat:"Comportement", type:"mcm",
+    q:"Avant de dépasser un cycliste, vous devez vérifier que : (plusieurs réponses)",
+    opts:["La voie d'en face est libre sur une distance suffisante","Le dépassement n'est pas interdit à cet endroit","Vous laisserez au moins 1 m de distance latérale en agglo (1,5 m hors agglo)","Le cycliste vous a vu et vous a donné son accord","Vous avez activé vos feux de route"],
+    ans:[0,1,2], exp:"Pour dépasser un cycliste : voie libre, dépassement autorisé, et distance latérale minimale (1 m en ville, 1,5 m hors agglo). Vous n'avez pas besoin de l'accord du cycliste, et les feux de route ne sont pas requis." },
+
+  { cat:"Autoroute", type:"mcm",
+    q:"Sur autoroute, lesquelles de ces actions sont STRICTEMENT INTERDITES ? (plusieurs réponses)",
+    opts:["Faire demi-tour","Circuler en marche arrière","S'arrêter sur la BAU pour se reposer","Dépasser par la droite","S'arrêter sur la BAU en cas de panne"],
+    ans:[0,1,2,3], exp:"Sont interdits : demi-tour, marche arrière, s'arrêter sur la BAU pour se reposer, et dépasser par la droite (sauf files à vitesses différentes). La BAU est réservée aux URGENCES/PANNES uniquement." },
+
+  { cat:"Environnement", type:"mcm",
+    q:"En cas d'accident avec blessés, lesquelles de ces actions font partie des gestes de PREMIER SECOURS corrects ? (plusieurs réponses)",
+    opts:["Baliser la zone avec le triangle et le gilet","Appeler le 15, 17, 18 ou 112","Déplacer systématiquement tous les blessés","Mettre une personne inconsciente qui respire en PLS","Pratiquer un massage cardiaque si la personne ne respire plus"],
+    ans:[0,1,3,4], exp:"Il faut : baliser, appeler les secours, mettre en PLS si inconscient mais respirant, et masser si arrêt cardiaque. Il NE FAUT PAS déplacer les blessés sauf danger immédiat (risque de lésion vertébrale)." },
+
+  { cat:"Voies", type:"mcm",
+    q:"Le couloir de sécurité sur autoroute s'applique quand : (plusieurs réponses)",
+    opts:["La circulation est ralentie ou à l'arrêt","Un accident est visible devant vous","Vous roulez à moins de 50 km/h","En cas de bouchon uniquement","Dès que vous voyez des feux de détresse devant vous"],
+    ans:[0,1,2,4], exp:"Le couloir de sécurité doit être formé dès que la circulation est ralentie (< 50 km/h environ), en cas d'accident visible, ou dès qu'on voit des feux de détresse. Ce n'est pas limité aux bouchons complets." },
+
+  { cat:"Permis & Infractions", type:"mcm",
+    q:"Lesquelles de ces infractions entraînent un retrait de 6 points ? (plusieurs réponses)",
+    opts:["Conduite sous l'emprise de l'alcool (≥ 0,8 g/L)","Usage du téléphone tenu en main","Refus de priorité","Conduite sous stupéfiants","Grand excès de vitesse (> 50 km/h)"],
+    ans:[0,3,4], exp:"6 points retirés pour : alcoolémie délictuelle (≥ 0,8 g/L), conduite sous stupéfiants, grand excès de vitesse (> 50 km/h). L'usage du téléphone coûte 3 points. Le refus de priorité coûte 4 points." },
+
+  { cat:"Signalisation", type:"mcm",
+    q:"Parmi ces panneaux, lesquels imposent une OBLIGATION (pas une interdiction) ? (plusieurs réponses)",
+    opts:["Panneau rond bleu avec flèche blanche","Panneau rond rouge avec chiffre","Panneau rond bleu avec pictogramme blanc (ex: piétons)","Panneau carré bleu","Panneau triangulaire rouge"],
+    ans:[0,2], exp:"Les panneaux ronds BLEUS imposent des obligations (direction à suivre, piétons, etc.). Les ronds ROUGES sont des interdictions (vitesse, sens interdit). Les carrés bleus sont informatifs. Les triangles rouges signalent des dangers." },
+
+  { cat:"Comportement", type:"mcm",
+    q:"Lesquels de ces comportements augmentent significativement le risque d'accident ? (plusieurs réponses)",
+    opts:["La fatigue (conduire plus de 2h sans pause)","Écouter la radio à volume normal","Avoir un passager qui parle","Utiliser le téléphone mains-libres","Conduire avec 0,4 g/L d'alcool (en dessous du seuil légal)"],
+    ans:[0,3,4], exp:"Augmentent le risque : fatigue (responsable de 30% accidents auto), mains-libres (divise l'attention mentale même si mains sur le volant), 0,4 g/L (déjà perceptible sur les réflexes même légal). La radio et le passager ont un impact modéré documenté mais moindre." },
+
+  { cat:"Vitesses", type:"mcm",
+    q:"Dans lesquelles de ces zones la limitation est de 30 km/h par défaut ? (plusieurs réponses)",
+    opts:["Une zone 30 signalée","Les abords immédiats d'une école (zone scolaire signalée)","En agglomération sur toutes les routes depuis 2021 (dans les villes qui l'ont adopté)","Sur les routes de montagne","Partout en France depuis 2018"],
+    ans:[0,1,2], exp:"30 km/h s'applique dans les zones 30 signalées, aux abords des écoles signalées, et dans les communes ayant adopté le 30 km/h généralisé (Paris, Lyon, Bordeaux...). Les routes de montagne suivent la règle générale de leur type. Ce n'est pas généralisé à toute la France." },
+
+  { cat:"Éclairage", type:"mcm",
+    q:"Dans lesquelles de ces situations devez-vous obligatoirement allumer vos feux de croisement ? (plusieurs réponses)",
+    opts:["La nuit","Par temps de brouillard","Par forte pluie de jour","Dans un tunnel (même éclairé)","Sur une route bien éclairée de nuit"],
+    ans:[0,1,2,3,4], exp:"Les feux de croisement sont obligatoires dans TOUTES ces situations : nuit, brouillard, forte pluie de jour (visibilité réduite), tunnel (même éclairé), et route éclairée de nuit (pour être vu, pas seulement pour voir)." },
+
+  { cat:"Distances & Freinage", type:"mcm",
+    q:"Lesquelles de ces affirmations sur l'ABS sont CORRECTES ? (plusieurs réponses)",
+    opts:["L'ABS évite le blocage des roues au freinage","L'ABS permet de conserver la direction lors d'un freinage d'urgence","L'ABS réduit toujours la distance de freinage","L'ABS est moins efficace sur gravier ou neige","En cas de freinage ABS, il faut maintenir une pression ferme sur la pédale"],
+    ans:[0,1,3,4], exp:"L'ABS : empêche le blocage des roues ✓, maintient la directivité ✓, MAIS ne réduit pas toujours la distance (notamment sur sols meubles : gravier, neige) ✓, et nécessite une pression ferme et continue (ne pas pomper) ✓." },
 ];
 
 // ════════════════════════════════════════════
@@ -1671,7 +1793,8 @@ function renderQuestion() {
 
   // Badges
   document.getElementById('q-category').textContent = q.cat;
-  document.getElementById('q-type-badge').textContent = q.type === 'tf' ? '✅ Vrai / Faux' : '📝 QCM';
+  const typeLabel = q.type === 'tf' ? '✅ Vrai / Faux' : q.type === 'mcm' ? '☑️ Plusieurs réponses' : '📝 QCM';
+  document.getElementById('q-type-badge').textContent = typeLabel;
 
   // Texte
   document.getElementById('q-text').textContent = q.q;
@@ -1681,10 +1804,14 @@ function renderQuestion() {
   fb.style.display = 'none';
   fb.className = 'feedback-box';
   document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-validate').style.display = 'none';
 
   // Réponses
   const container = document.getElementById('q-answers');
   container.innerHTML = '';
+  // Nettoyer le hint MCM précédent s'il existe
+  const oldHint = document.querySelector('.mcm-hint');
+  if (oldHint) oldHint.remove();
 
   if (q.type === 'tf') {
     container.innerHTML = `
@@ -1696,6 +1823,25 @@ function renderQuestion() {
           <span class="tf-icon">❌</span>Faux
         </button>
       </div>`;
+
+  } else if (q.type === 'mcm') {
+    // Hint
+    const hint = document.createElement('div');
+    hint.className = 'mcm-hint';
+    hint.innerHTML = `☑️ Cochez <strong>toutes</strong> les bonnes réponses puis validez`;
+    container.before(hint);
+    container.className = 'answers';
+    const letters = ['A','B','C','D','E'];
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'answer-btn';
+      btn.dataset.idx = i;
+      btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => toggleMCM(btn);
+      container.appendChild(btn);
+    });
+    document.getElementById('btn-validate').style.display = 'block';
+
   } else {
     const letters = ['A','B','C','D'];
     q.opts.forEach((opt, i) => {
@@ -1707,6 +1853,42 @@ function renderQuestion() {
     });
     container.className = 'answers';
   }
+}
+
+function toggleMCM(btn) {
+  if (answered) return;
+  btn.classList.toggle('mcm-selected');
+}
+
+function validateMCM() {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[currentIndex];
+  const correctSet = new Set(q.ans); // q.ans est un tableau d'indices
+  const allBtns = document.querySelectorAll('.answer-btn');
+  const selectedSet = new Set();
+
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.classList.contains('mcm-selected')) selectedSet.add(Number(b.dataset.idx));
+  });
+
+  // Comparer les deux sets
+  const perfect = selectedSet.size === correctSet.size &&
+    [...selectedSet].every(i => correctSet.has(i));
+
+  allBtns.forEach(b => {
+    const i = Number(b.dataset.idx);
+    const isCorrect = correctSet.has(i);
+    const isSelected = selectedSet.has(i);
+    if (isCorrect && isSelected)  b.classList.add('correct');
+    else if (isCorrect && !isSelected) b.classList.add('reveal-correct');
+    else if (!isCorrect && isSelected) b.classList.add('wrong');
+    b.classList.remove('mcm-selected');
+  });
+
+  document.getElementById('btn-validate').style.display = 'none';
+  processAnswer(perfect, q.exp);
 }
 
 function answerQCM(idx, clickedBtn, q) {
