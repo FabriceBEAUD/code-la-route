@@ -224,6 +224,53 @@ header h1 span { color: #fbbf24; }
 
 .login-footer { margin-top: 18px; font-size: 0.75rem; color: #bbb; }
 
+/* ── FACE ID ── */
+.btn-faceid {
+  display: none;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 14px;
+  border: 2px solid #1e3a5f;
+  background: #0f172a;
+  color: white;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 15px rgba(15,23,42,0.3);
+  letter-spacing: 0.3px;
+}
+.btn-faceid:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(15,23,42,0.4); }
+
+.faceid-banner {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 24px 32px;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.12);
+  z-index: 1000;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.faceid-banner h3 { font-size: 1.1rem; color: #0f172a; font-weight: 800; margin-bottom: 6px; }
+.faceid-banner p  { font-size: 0.85rem; color: #6b7280; margin-bottom: 16px; }
+.faceid-banner-btns { display: flex; gap: 10px; }
+.btn-faceid-enable {
+  flex: 1; padding: 13px; border-radius: 12px; border: none;
+  background: #0f172a; color: white;
+  font-size: 0.95rem; font-weight: 800; cursor: pointer;
+}
+.btn-faceid-skip {
+  padding: 13px 18px; border-radius: 12px;
+  border: 2px solid #e5e7eb; background: white;
+  font-size: 0.9rem; color: #9ca3af; cursor: pointer;
+}
+
 .login-link {
   margin-top: 14px;
   font-size: 0.85rem;
@@ -945,9 +992,20 @@ header h1 span { color: #fbbf24; }
       onkeydown="if(event.key==='Enter') doLogin()">
   </div>
   <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
+  <button id="btn-faceid" class="btn-faceid" onclick="loginWithFaceID()">🔒 Se connecter avec Face ID</button>
   <button class="btn-login" onclick="doLogin()">Se connecter →</button>
   <button class="login-link" onclick="show('screen-register')">🎫 J'ai un code d'invitation → Créer mon compte</button>
   <p class="login-footer">Application privée — accès sur invitation du Papounet</p>
+</div>
+
+<!-- ════ BANNIÈRE FACE ID ════ -->
+<div id="faceid-banner" class="faceid-banner">
+  <h3>🔒 Activer Face ID ?</h3>
+  <p>Connecte-toi en un regard la prochaine fois, sans taper ton mot de passe.</p>
+  <div class="faceid-banner-btns">
+    <button class="btn-faceid-enable" onclick="registerFaceID()">✅ Activer Face ID</button>
+    <button class="btn-faceid-skip" onclick="skipFaceID()">Plus tard</button>
+  </div>
 </div>
 
 <!-- ════ ÉCRAN INSCRIPTION ════ -->
@@ -1926,6 +1984,133 @@ function goHome() {
 // ════════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════════
+// ════════════════════════════════════════════
+// FACE ID / WEBAUTHN
+// ════════════════════════════════════════════
+function b64(buf) {
+  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function buf(b64url) {
+  const b = b64url.replace(/-/g,'+').replace(/_/g,'/');
+  const bin = atob(b);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return arr.buffer;
+}
+
+function checkFaceIDAvailable() {
+  if (!window.PublicKeyCredential) return;
+  const lastUser = localStorage.getItem('wa_last_user');
+  if (!lastUser) return;
+  const credId = localStorage.getItem('wa_cred_' + lastUser);
+  if (!credId) return;
+  const btn = document.getElementById('btn-faceid');
+  if (btn) {
+    btn.textContent = `🔒 Se connecter avec Face ID (${lastUser})`;
+    btn.style.display = 'block';
+  }
+}
+
+async function loginWithFaceID() {
+  const lastUser = localStorage.getItem('wa_last_user');
+  const credId   = lastUser ? localStorage.getItem('wa_cred_' + lastUser) : null;
+  if (!credId) return;
+  const errEl = document.getElementById('login-error');
+  try {
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        rpId: location.hostname,
+        userVerification: 'required',
+        allowCredentials: [{ id: buf(credId), type: 'public-key' }],
+        timeout: 60000,
+      }
+    });
+    const gotCredId = b64(assertion.rawId);
+    const r = await fetch('/api/webauthn?action=login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credentialId: gotCredId }),
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      errEl.textContent = data.error || 'Face ID non reconnu.';
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+    currentUser = data.user;
+    document.getElementById('header-username').textContent = data.user.nom;
+    document.getElementById('header-user').style.display = 'flex';
+    document.getElementById('header-subtitle').style.display = 'none';
+    goHome();
+  } catch(e) {
+    if (e.name !== 'NotAllowedError') {
+      errEl.textContent = 'Erreur Face ID — utilise ton mot de passe.';
+      errEl.style.display = 'block';
+    }
+  }
+}
+
+async function registerFaceID() {
+  if (!window.PublicKeyCredential) {
+    alert("Ton appareil ne supporte pas encore Face ID via le web. 😢");
+    return;
+  }
+  hideFaceIDBanner();
+  try {
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const userId    = new TextEncoder().encode(currentUser.user);
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        rp: { name: 'Code de la route du Papounet', id: location.hostname },
+        user: { id: userId, name: currentUser.user, displayName: currentUser.nom },
+        challenge,
+        pubKeyCredParams: [
+          { type: 'public-key', alg: -7 },
+          { type: 'public-key', alg: -257 },
+        ],
+        authenticatorSelection: { userVerification: 'required', residentKey: 'preferred' },
+        timeout: 60000,
+      }
+    });
+    const credId = b64(credential.rawId);
+    const r = await fetch('/api/webauthn?action=register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credentialId: credId, userId: currentUser.user, nom: currentUser.nom, avatar: currentUser.avatar }),
+    });
+    if (r.ok) {
+      localStorage.setItem('wa_cred_' + currentUser.user, credId);
+      localStorage.setItem('wa_last_user', currentUser.user);
+      alert('✅ Face ID activé ! La prochaine fois, un seul regard suffit. 🔒');
+    }
+  } catch(e) {
+    if (e.name !== 'NotAllowedError') alert('Impossible d\'activer Face ID. Réessaie plus tard.');
+  }
+}
+
+function showFaceIDBanner() {
+  if (!window.PublicKeyCredential) return;
+  if (!currentUser) return;
+  const existing = localStorage.getItem('wa_cred_' + currentUser.user);
+  if (existing) return;
+  const skip = localStorage.getItem('wa_skip_' + currentUser.user);
+  if (skip) return;
+  const banner = document.getElementById('faceid-banner');
+  if (banner) banner.style.display = 'block';
+}
+function hideFaceIDBanner() {
+  const banner = document.getElementById('faceid-banner');
+  if (banner) banner.style.display = 'none';
+}
+function skipFaceID() {
+  if (currentUser) localStorage.setItem('wa_skip_' + currentUser.user, '1');
+  hideFaceIDBanner();
+}
+
 // ── Compteur de taps caché pour accès admin ──
 let adminTapCount = 0, adminTapTimer = null;
 function adminTap() {
@@ -1978,6 +2163,7 @@ async function doRegister() {
       sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
       show('screen-home');
       updateGlobalStats();
+      showFaceIDBanner();
     }, 1200);
   } catch {
     errEl.textContent = 'Erreur réseau. Vérifie ta connexion.';
@@ -2063,6 +2249,7 @@ async function doLogin() {
     document.getElementById('header-user').style.display = 'flex';
     document.getElementById('header-subtitle').style.display = 'none';
     goHome();
+    showFaceIDBanner();
     return;
   }
 
@@ -2088,6 +2275,7 @@ async function doLogin() {
     document.getElementById('header-user').style.display = 'flex';
     document.getElementById('header-subtitle').style.display = 'none';
     goHome();
+    showFaceIDBanner();
   } catch {
     errEl.textContent = 'Erreur réseau. Vérifie ta connexion. ❌';
     errEl.style.display = 'block';
@@ -2551,6 +2739,7 @@ async function submitScore() {
 // INIT
 // ════════════════════════════════════════════
 show('screen-login');
+checkFaceIDAvailable();
 
 // ── SERVICE WORKER (PWA) ──
 if ('serviceWorker' in navigator) {
