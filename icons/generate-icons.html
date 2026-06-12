@@ -20,44 +20,58 @@ function drawIcon(size) {
   const c = document.getElementById('c' + size);
   const ctx = c.getContext('2d');
   const s = size;
-
-  // Fond dégradé bleu nuit
-  const grad = ctx.createLinearGradient(0, 0, s, s);
-  grad.addColorStop(0, '#0f172a');
-  grad.addColorStop(1, '#1e3a5f');
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, s, s, s * 0.18);
-  ctx.fill();
-
-  // Cercle lumineux
-  const glow = ctx.createRadialGradient(s/2, s/2.2, 0, s/2, s/2.2, s*0.38);
-  glow.addColorStop(0, 'rgba(37,99,235,0.5)');
-  glow.addColorStop(1, 'rgba(37,99,235,0)');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, s, s);
-
   const fs = s / 192;
 
-  // Emoji voiture
-  ctx.font = `${Math.round(80 * fs)}px serif`;
+  // --- Fond bleu nuit arrondi ---
+  const grad = ctx.createLinearGradient(0, 0, s, s);
+  grad.addColorStop(0, '#0f172a');
+  grad.addColorStop(0.6, '#1e3a5f');
+  grad.addColorStop(1, '#1e40af');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, s, s, s * 0.20);
+  ctx.fill();
+
+  // --- Route (bande grise en bas) ---
+  ctx.fillStyle = '#334155';
+  ctx.beginPath();
+  ctx.roundRect(0, s * 0.72, s, s * 0.28, { lowerLeft: s * 0.20, lowerRight: s * 0.20 });
+  ctx.fill();
+
+  // Ligne pointillée blanche au centre de la route
+  ctx.setLineDash([s * 0.06, s * 0.06]);
+  ctx.strokeStyle = '#f1f5f9';
+  ctx.lineWidth = s * 0.03;
+  ctx.beginPath();
+  ctx.moveTo(s * 0.15, s * 0.845);
+  ctx.lineTo(s * 0.85, s * 0.845);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // --- Halo lumineux derrière la voiture ---
+  const halo = ctx.createRadialGradient(s/2, s*0.48, 0, s/2, s*0.48, s*0.36);
+  halo.addColorStop(0, 'rgba(59,130,246,0.45)');
+  halo.addColorStop(1, 'rgba(59,130,246,0)');
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, s, s);
+
+  // --- Voiture (emoji) ---
+  ctx.font = `${Math.round(88 * fs)}px serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('🚗', s / 2, s * 0.38);
+  ctx.fillText('🚗', s / 2, s * 0.46);
 
-  // Titre
+  // --- Texte "CODE" ---
+  ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = '#ffffff';
-  ctx.font = `bold ${Math.round(18 * fs)}px 'Segoe UI', sans-serif`;
-  ctx.fillText('CODE', s / 2, s * 0.68);
+  ctx.font = `900 ${Math.round(28 * fs)}px 'Segoe UI', Arial Black, sans-serif`;
+  ctx.letterSpacing = `${2 * fs}px`;
+  ctx.fillText('CODE', s / 2, s * 0.695);
 
-  ctx.fillStyle = '#f59e0b';
-  ctx.font = `bold ${Math.round(14 * fs)}px 'Segoe UI', sans-serif`;
-  ctx.fillText('PAPOUNET', s / 2, s * 0.80);
-
-  // Petites étoiles décoratives
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.font = `${Math.round(10 * fs)}px serif`;
-  ctx.fillText('⭐⭐⭐', s / 2, s * 0.90);
+  // --- Étoile dorée ---
+  ctx.font = `${Math.round(16 * fs)}px serif`;
+  ctx.fillText('⭐', s / 2 - Math.round(36 * fs), s * 0.695);
+  ctx.fillText('⭐', s / 2 + Math.round(36 * fs), s * 0.695);
 }
 
 function download(size) {
